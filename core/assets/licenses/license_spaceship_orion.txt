@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spaceship : Orion
+* source:	https://sketchfab.com/3d-models/spaceship-orion-41de9d0d0eb74650b5fd98175d72fe71
+* author:	GrimGenesis (https://sketchfab.com/GrimGenesis)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spaceship : Orion" (https://sketchfab.com/3d-models/spaceship-orion-41de9d0d0eb74650b5fd98175d72fe71) by GrimGenesis (https://sketchfab.com/GrimGenesis) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

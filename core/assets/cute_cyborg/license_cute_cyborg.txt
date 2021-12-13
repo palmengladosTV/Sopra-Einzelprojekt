@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low poly Cute Cyborg
+* source:	https://sketchfab.com/3d-models/low-poly-cute-cyborg-d2046c1fa5c141c287971d6de62dc796
+* author:	Shums (https://sketchfab.com/starshums)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low poly Cute Cyborg" (https://sketchfab.com/3d-models/low-poly-cute-cyborg-d2046c1fa5c141c287971d6de62dc796) by Shums (https://sketchfab.com/starshums) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
