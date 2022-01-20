@@ -1,26 +1,25 @@
 package io.swapastack.dunetd;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.util.TableUtils;
+import com.kotcrab.vis.ui.widget.*;
+
+import static com.kotcrab.vis.ui.VisUI.getSkin;
+
 
 /**
  * This is the MainMenuScreen class.
@@ -69,6 +68,7 @@ public class MainMenuScreen implements Screen {
      * @author Dennis Jehle
      */
     public MainMenuScreen(DuneTD parent) {
+        VisUI.load();
         // store reference to parent class
         this.parent = parent;
         // initialize OrthographicCamera with current screen size
@@ -81,7 +81,8 @@ public class MainMenuScreen implements Screen {
         // initialize the Stage with the ScreenViewport created above
         stage = new Stage(viewport, spriteBatch);
         // initialize the Skin
-        skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
+        skin = getSkin();
+        //skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
 
         // create string for BitmapFont and Label creation
         String duneTD = "Dune TD";
@@ -132,8 +133,8 @@ public class MainMenuScreen implements Screen {
         backgroundMusic.setLooping(true);
         //backgroundMusic.play(); // TODO: reactivate
 
-        // create switch to GameScreen button
-        Button gameScreenButton = new TextButton("GAME SCREEN", skin, "small");
+        // create switch to GameScreen button //ORIG: add attribute "small"!!!
+        Button gameScreenButton = new TextButton("Start Game", skin);
         gameScreenButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - gameScreenButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 125.f
@@ -146,15 +147,49 @@ public class MainMenuScreen implements Screen {
             }
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                parent.changeScreen(ScreenEnum.GAME);
+                TextField f = new TextField("5", skin);
+                TextField g = new TextField("5", skin);
+                Dialog ss = new Dialog("Initial Game Options", skin){
+                   public void result(Object o){
+                       try {
+                           if(Byte.parseByte(f.getText()) < 10 || Byte.parseByte(g.getText()) < 10)
+                               parent.changeScreen(ScreenEnum.GAME, Byte.parseByte(f.getText()), Byte.parseByte(g.getText()));
+                           else
+                               invalidInput();
+                       }
+                       catch (NumberFormatException e){
+                           invalidInput();
+                       }
+                   }
+
+                   private void invalidInput(){
+                        Dialog ii = new Dialog("Invalid Input", skin);
+                        Label il = new Label("Your input must be a\nnumber and between 2 and 10!", skin);
+                        il.setAlignment(Align.center);
+                        ii.text(il);
+                        ii.button("OK");
+                        ii.show(stage);
+                   }
+               };
+               ss.getContentTable().add(new Label("Field dimension:", skin));
+               ss.getContentTable().add(f).width(20);
+               ss.getContentTable().add(new Label("x", skin));
+               ss.getContentTable().add(g).width(20);
+               ss.button("Start game");
+               //ss.getCells().forEach(c -> c.padBottom(3));
+               //ss.debug();
+               ss.show(stage);
+
             }
+
         });
+
 
         // add exit button to Stage
         stage.addActor(gameScreenButton);
 
         // create switch to GameScreen button
-        Button showcaseButton = new TextButton("SHOWCASE", skin, "small");
+        Button showcaseButton = new TextButton("SHOWCASE", skin);
         showcaseButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - showcaseButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 200.f
@@ -175,7 +210,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(showcaseButton);
 
         // create exit application button
-        Button exitButton = new TextButton("EXIT", skin, "small");
+        Button exitButton = new TextButton("EXIT", skin);
         exitButton.setPosition(
                 10.0f
                 , 10.0f
@@ -230,6 +265,7 @@ public class MainMenuScreen implements Screen {
 
         // draw background graphic
         spriteBatch.begin();
+        spriteBatch.setColor(Color.WHITE);
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getScreenWidth(), viewport.getScreenHeight());
         spriteBatch.end();
 
@@ -291,5 +327,6 @@ public class MainMenuScreen implements Screen {
         skin.dispose();
         stage.dispose();
         spriteBatch.dispose();
+        VisUI.dispose();
     }
 }

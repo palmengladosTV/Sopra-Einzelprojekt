@@ -2,13 +2,14 @@ package io.swapastack.dunetd.desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.kotcrab.vis.ui.VisUI;
 import io.swapastack.dunetd.DuneTD;
 
 public class DesktopLauncher {
 
 	// window settings
-	private static final int width = 1600;
-	private static final int height = 900;
+	private static final int width = 800;
+	private static final int height = 450;
 	private static final boolean vsync = false;
 
 	public static void main (String[] arg) {

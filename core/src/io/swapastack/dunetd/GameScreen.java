@@ -73,6 +73,12 @@ public class GameScreen implements Screen {
         this.parent = parent;
     }
 
+    public GameScreen(DuneTD parent, byte fieldX, byte fieldY) {
+        this.parent = parent;
+        this.rows = fieldX;
+        this.cols = fieldY;
+    }
+
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
      * @author Dennis Jehle

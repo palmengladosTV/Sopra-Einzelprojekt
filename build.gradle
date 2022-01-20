@@ -27,6 +27,7 @@ allprojects {
         // SpaiR/imgui-java related
         lwjglVersion = '3.2.3'
         imguiVersion = '1.84.1.4'
+        visuiVersion = '1.4.7'
     }
 
     repositories {
@@ -64,6 +65,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+
     }
 }
 
@@ -81,6 +83,8 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+
+        compile "com.kotcrab.vis:vis-ui:$visuiVersion"
 
         // google/gson
         implementation 'com.google.code.gson:gson:2.8.6'
@@ -104,5 +108,7 @@ project(":core") {
         implementation 'io.github.spair:imgui-java-natives-windows:1.84.1.4'
         implementation 'io.github.spair:imgui-java-natives-linux:1.84.1.4'
         implementation 'io.github.spair:imgui-java-natives-macos:1.84.1.4'
+
+        //compile "com.kotcrab.vis:vis-ui:1.5.0"
     }
 }
