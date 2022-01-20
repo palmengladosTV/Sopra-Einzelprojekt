@@ -7,8 +7,8 @@ import io.swapastack.dunetd.DuneTD;
 public class DesktopLauncher {
 
 	// window settings
-	private static final int width = 1600;
-	private static final int height = 900;
+	private static final int width = 800;
+	private static final int height = 450;
 	private static final boolean vsync = false;
 
 	public static void main (String[] arg) {

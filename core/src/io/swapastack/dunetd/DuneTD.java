@@ -4,11 +4,13 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.kotcrab.vis.ui.VisUI;
 import net.mgsx.gltf.loaders.glb.GLBAssetLoader;
 import net.mgsx.gltf.loaders.gltf.GLTFAssetLoader;
 import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
 public class DuneTD extends Game {
+
 
 	// The AssetManager is used to load game assets like 3D gltf models or pngs
 	public static AssetManager assetManager = new AssetManager();
@@ -47,6 +49,7 @@ public class DuneTD extends Game {
 	public void create () {
 		// set window title
 		Gdx.graphics.setTitle("Dune-TD - Sopra 2021 / 2022");
+		VisUI.load();
 
 		// configure asset manager to work with gdx gltf
 		assetManager.setLoader(SceneAsset.class, ".gltf", new GLTFAssetLoader());

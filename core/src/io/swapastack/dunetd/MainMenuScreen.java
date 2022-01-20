@@ -1,26 +1,22 @@
 package io.swapastack.dunetd;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.VisUI;
+
+import static com.kotcrab.vis.ui.VisUI.getSkin;
+
 
 /**
  * This is the MainMenuScreen class.
@@ -81,7 +77,8 @@ public class MainMenuScreen implements Screen {
         // initialize the Stage with the ScreenViewport created above
         stage = new Stage(viewport, spriteBatch);
         // initialize the Skin
-        skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
+        skin = getSkin();
+        //skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
 
         // create string for BitmapFont and Label creation
         String duneTD = "Dune TD";
@@ -132,8 +129,8 @@ public class MainMenuScreen implements Screen {
         backgroundMusic.setLooping(true);
         //backgroundMusic.play(); // TODO: reactivate
 
-        // create switch to GameScreen button
-        Button gameScreenButton = new TextButton("GAME SCREEN", skin, "small");
+        // create switch to GameScreen button //ORIG: add attribute "small"!!!
+        Button gameScreenButton = new TextButton("Start Game", skin);
         gameScreenButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - gameScreenButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 125.f
@@ -146,15 +143,44 @@ public class MainMenuScreen implements Screen {
             }
             @Override
             public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                parent.changeScreen(ScreenEnum.GAME);
+                //parent.changeScreen(ScreenEnum.GAME);
+
+               Dialog ss = new Dialog("scheiße", skin);
+               Table tt = new Table();
+               tt.add(new Label("Du willst ein Buch", skin));
+               tt.row();
+               TextField f = new TextField("Ficken", skin);
+               tt.add(f);
+               tt.row();
+               TextButton b = new TextButton("sdssgs", skin);
+               b.addListener(new InputListener(){
+                   @Override
+                   public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                       System.out.println("hallo");
+                       return true;
+                   }
+                   @Override
+                   public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+                       System.out.println("fsa");
+                       System.out.println(f.getText());
+                   }
+               });
+               tt.add(b);
+               tt.getCells().forEach(c -> c.pad(2));
+               ss.add(tt);
+               ss.show(stage);
+
+
             }
+
         });
+
 
         // add exit button to Stage
         stage.addActor(gameScreenButton);
 
         // create switch to GameScreen button
-        Button showcaseButton = new TextButton("SHOWCASE", skin, "small");
+        Button showcaseButton = new TextButton("SHOWCASE", skin);
         showcaseButton.setPosition(
                 (float)Gdx.graphics.getWidth() / 2.f - showcaseButton.getWidth() / 2.f
                 , (float)Gdx.graphics.getHeight() / 2.f - 200.f
@@ -175,7 +201,7 @@ public class MainMenuScreen implements Screen {
         stage.addActor(showcaseButton);
 
         // create exit application button
-        Button exitButton = new TextButton("EXIT", skin, "small");
+        Button exitButton = new TextButton("EXIT", skin);
         exitButton.setPosition(
                 10.0f
                 , 10.0f
@@ -230,6 +256,7 @@ public class MainMenuScreen implements Screen {
 
         // draw background graphic
         spriteBatch.begin();
+        spriteBatch.setColor(Color.WHITE);
         spriteBatch.draw(backgroundTexture, 0, 0, viewport.getScreenWidth(), viewport.getScreenHeight());
         spriteBatch.end();
 
@@ -291,5 +318,6 @@ public class MainMenuScreen implements Screen {
         skin.dispose();
         stage.dispose();
         spriteBatch.dispose();
+        VisUI.dispose();
     }
 }
