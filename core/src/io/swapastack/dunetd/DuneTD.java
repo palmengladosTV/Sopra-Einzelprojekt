@@ -74,6 +74,7 @@ public class DuneTD extends Game {
 	public void create () {
 		// set window title
 		Gdx.graphics.setTitle("Dune-TD - Sopra 2021 / 2022");
+		VisUI.load();
 
 
 		// configure asset manager to work with gdx gltf
