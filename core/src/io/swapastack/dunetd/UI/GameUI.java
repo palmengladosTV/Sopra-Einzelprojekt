@@ -1,0 +1,55 @@
+package io.swapastack.dunetd.UI;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kotcrab.vis.ui.VisUI;
+import io.swapastack.dunetd.DuneTD;
+
+public class GameUI {
+    private final DuneTD parent;
+    public Stage stage;
+    public TowerPickerWidget tpw;
+    private InputMultiplexer iMpx;
+
+    public GameUI(DuneTD parent){
+        this.parent = parent;
+        stage = new Stage(new FitViewport(DuneTD.WIDTH,DuneTD.HEIGHT));
+        VisUI.load();
+        //iMpx = new InputMultiplexer();
+        setWidgets();
+        configureWidgets();
+    }
+
+    private void setWidgets() {
+        tpw = new TowerPickerWidget(parent, stage);
+    }
+
+    private void configureWidgets() {
+        tpw.setSize(200,200);
+        tpw.setPosition(300, 200);
+        stage.addActor(tpw);
+        //iMpx.addProcessor(tpw.getStage());
+        //Gdx.input.setInputProcessor(iMpx);
+    }
+    public void update(float delta){
+        stage.act(delta);
+
+    }
+    public void render(){
+        stage.draw();
+    }
+    public void resize(int width, int height) {
+        stage.getViewport().update(width,height);
+    }
+    public void dispose(){
+        stage.dispose();
+    }
+
+
+}

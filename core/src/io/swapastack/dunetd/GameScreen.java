@@ -1,9 +1,6 @@
 package io.swapastack.dunetd;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
@@ -11,10 +8,12 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.kotcrab.vis.ui.VisUI;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+import io.swapastack.dunetd.UI.GameUI;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -69,16 +68,26 @@ public class GameScreen implements Screen {
     public ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
     long windowHandle;
 
+    //Game UI
+    GameUI gameUI;
+
     public GameScreen(DuneTD parent) {
         this.parent = parent;
+        initGameUI();
     }
 
     public GameScreen(DuneTD parent, byte fieldX, byte fieldY) {
         this.parent = parent;
         this.rows = fieldX;
         this.cols = fieldY;
+        initGameUI();
     }
 
+    public void initGameUI(){
+        gameUI = new GameUI(parent);
+        //Gdx.input.setInputProcessor(gameUI.stage);
+        System.out.println("HEY!");
+    }
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
      * @author Dennis Jehle
@@ -132,7 +141,11 @@ public class GameScreen implements Screen {
 
         // Set Input Processor
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        //inputMultiplexer.addProcessor(cameraInputController);
+        inputMultiplexer.addProcessor(gameUI.stage);
         inputMultiplexer.addProcessor(cameraInputController);
+        //inputMultiplexer.addProcessor(gameUI.tpw.stage);
+        //inputMultiplexer.addProcessor(gameUI.tpw.iMpx);
         // TODO: add further input processors if needed
         Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -162,7 +175,8 @@ public class GameScreen implements Screen {
         SceneAsset harvesterCharacter = parent.assetManager.get("spaceship_orion/scene.gltf");
         sceneAssetHashMap.put("spaceship_orion/scene.gltf", harvesterCharacter);
 
-        createMapExample(sceneManager);
+        //createMapExample(sceneManager);
+        createMap(sceneManager);
 
     }
 
@@ -177,9 +191,12 @@ public class GameScreen implements Screen {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-        bossCharacterAnimationController.update(delta);
-        enemyCharacterAnimationController.update(delta);
-        spaceshipAnimationController.update(delta);
+        try { bossCharacterAnimationController.update(delta); }
+        catch (NullPointerException ignored) { }
+        try { enemyCharacterAnimationController.update(delta); }
+        catch (NullPointerException ignored) { }
+        try{ spaceshipAnimationController.update(delta); }
+        catch (NullPointerException ignored) { }
 
         // SpaiR/imgui-java
         imGuiGlfw.newFrame();
@@ -202,12 +219,19 @@ public class GameScreen implements Screen {
         // SpaiR/imgui-java
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+
+        //Update UI
+        gameUI.update(delta);
+
+        //Draw UI
+        gameUI.render();
     }
 
     @Override
     public void resize(int width, int height) {
         // GDX GLTF - update the viewport
         sceneManager.updateViewport(width, height);
+        //gameUI.resize(width,height);
     }
 
     @Override
@@ -225,16 +249,13 @@ public class GameScreen implements Screen {
         // TODO: implement hide logic if needed
     }
 
-    /**
-     * This function acts as a starting point.
-     * It generate a simple rectangular map with towers placed on it.
-     * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
-     * Feel free to modify the values and check the results.
-     *
-     * @param sceneManager
-     */
-    private void createMapExample(SceneManager sceneManager) {
+    private void createMap(SceneManager sceneManager){
+        Vector3 groundTileDimensions = createGround();
 
+
+    }
+
+    private Vector3 createGround(){
         Vector3 groundTileDimensions = new Vector3();
 
         // Simple way to generate the example map
@@ -259,6 +280,21 @@ public class GameScreen implements Screen {
                 // it could be useful to store the Scene object reference outside this method
             }
         }
+
+        return groundTileDimensions;
+    }
+
+    /**
+     * This function acts as a starting point.
+     * It generate a simple rectangular map with towers placed on it.
+     * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
+     * Feel free to modify the values and check the results.
+     *
+     * @param sceneManager
+     */
+    private void createMapExample(SceneManager sceneManager) {
+
+        Vector3 groundTileDimensions = createGround();
 
         // place example sonicTower
         Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
@@ -313,6 +349,8 @@ public class GameScreen implements Screen {
         specularCubemap.dispose();
         brdfLUT.dispose();
         skybox.dispose();
+        VisUI.dispose();
+        gameUI.dispose();
     }
 
 }
