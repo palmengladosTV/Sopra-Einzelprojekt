@@ -15,10 +15,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kotcrab.vis.ui.VisUI;
-import com.kotcrab.vis.ui.util.TableUtils;
-import com.kotcrab.vis.ui.widget.*;
-
-import static com.kotcrab.vis.ui.VisUI.getSkin;
 
 
 /**
@@ -81,7 +77,7 @@ public class MainMenuScreen implements Screen {
         // initialize the Stage with the ScreenViewport created above
         stage = new Stage(viewport, spriteBatch);
         // initialize the Skin
-        skin = getSkin();
+        skin = VisUI.getSkin();
         //skin = new Skin(Gdx.files.internal("glassy/skin/glassy-ui.json"));
 
         // create string for BitmapFont and Label creation

@@ -85,8 +85,6 @@ public class GameScreen implements Screen {
 
     public void initGameUI(){
         gameUI = new GameUI(parent);
-        //Gdx.input.setInputProcessor(gameUI.stage);
-        System.out.println("HEY!");
     }
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
@@ -140,13 +138,10 @@ public class GameScreen implements Screen {
         cameraInputController = new CameraInputController(camera);
 
         // Set Input Processor
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
-        //inputMultiplexer.addProcessor(cameraInputController);
-        inputMultiplexer.addProcessor(gameUI.stage);
-        inputMultiplexer.addProcessor(cameraInputController);
-        //inputMultiplexer.addProcessor(gameUI.tpw.stage);
-        //inputMultiplexer.addProcessor(gameUI.tpw.iMpx);
         // TODO: add further input processors if needed
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(gameUI.inputMultiplexerUI);
+        inputMultiplexer.addProcessor(cameraInputController);
         Gdx.input.setInputProcessor(inputMultiplexer);
 
         // Load all 3D models listed in kenney_assets.txt file in blocking mode
