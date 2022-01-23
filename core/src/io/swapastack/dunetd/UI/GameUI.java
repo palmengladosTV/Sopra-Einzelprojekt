@@ -26,8 +26,8 @@ public class GameUI {
     }
 
     private void configureWidgets() {
-        tpw.setSize(100,200);
-        tpw.setPosition(25, 60);
+        tpw.setSize(150,220);
+        tpw.setPosition(40, 150);
     }
     public void update(float delta){
         stage.act(delta);

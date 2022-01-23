@@ -10,8 +10,8 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 
 public class DuneTD extends Game {
 
-	public static final float WIDTH = 800;
-	public static final float HEIGHT= 450;
+	public static final float WIDTH = 1400;
+	public static final float HEIGHT= 800;
 
 
 	// The AssetManager is used to load game assets like 3D gltf models or pngs

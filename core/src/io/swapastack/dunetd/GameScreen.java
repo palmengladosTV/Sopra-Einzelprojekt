@@ -35,6 +35,8 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
 
+    public static int[][] gameField;
+
     // GDX GLTF
     private SceneManager sceneManager;
     private Cubemap diffuseCubemap;
@@ -88,7 +90,6 @@ public class GameScreen implements Screen {
     }
     /**
      * Called when this screen becomes the current screen for a {@link Game}.
-     * @author Dennis Jehle
      */
     @Override
     public void show() {
@@ -177,8 +178,6 @@ public class GameScreen implements Screen {
 
     /**
      * Called when the screen should render itself.
-     *
-     * @author Dennis Jehle
      * @param delta - The time in seconds since the last render.
      */
     @Override
@@ -246,12 +245,11 @@ public class GameScreen implements Screen {
 
     private void createMap(SceneManager sceneManager){
         Vector3 groundTileDimensions = createGround();
-
-
     }
 
     private Vector3 createGround(){
         Vector3 groundTileDimensions = new Vector3();
+        gameField = new int[rows][cols];
 
         // Simple way to generate the example map
         for (int i = 0; i < rows; i++) {
@@ -283,8 +281,6 @@ public class GameScreen implements Screen {
      * This function acts as a starting point.
      * It generate a simple rectangular map with towers placed on it.
      * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
-     * Feel free to modify the values and check the results.
-     *
      * @param sceneManager
      */
     private void createMapExample(SceneManager sceneManager) {

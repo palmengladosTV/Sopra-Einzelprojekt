@@ -8,9 +8,9 @@ import io.swapastack.dunetd.DuneTD;
 
 public class TowerPickerWidget extends Actor {
     private final DuneTD parent;
-    private VisWindow window;
     private Stage stage;
     private InputMultiplexer inputMultiplexer;
+    private VisWindow window;
     private VisList<String> list;
     private VisTextButton b;
 
@@ -24,17 +24,18 @@ public class TowerPickerWidget extends Actor {
     }
 
     private void setWidgets() {
-        window = new VisWindow("Choose a tower");
+        window = new VisWindow("Place Towers");
         list = new VisList<String>();
-        list.setItems("item1", "item2", "item3", "item4");
-        b = new VisTextButton("OK");
+        list.setItems("Sonic Tower", "Canon Tower", "Bomb Tower", "Klopfer", "Start-Portal", "End-Portal");
+        list.setSelectedIndex(-1);
+        b = new VisTextButton("Spawn Enemies");
 
     }
 
     private void configureWidgets() {
         window.add(list).row();
-        window.add(b).row();
-        window.add(new LinkLabel("Link"));
+        window.add(new Separator()).pad(5).fillX().expandX().row();
+        window.add(b);
         stage.addActor(window);
     }
 
@@ -43,6 +44,13 @@ public class TowerPickerWidget extends Actor {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
                 System.out.println("Saas");
+                GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer);
+            }
+        });
+        list.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent inputEvent, float x, float y){
+
             }
         });
 
