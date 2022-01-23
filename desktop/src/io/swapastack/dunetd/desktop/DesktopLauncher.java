@@ -16,6 +16,7 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(width, height);
 		config.useVsync(vsync);
+		config.setResizable(false);
 		Lwjgl3Application lwjgl3Application = new Lwjgl3Application(new DuneTD(), config);
 	}
 }
