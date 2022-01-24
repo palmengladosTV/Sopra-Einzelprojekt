@@ -6,6 +6,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.kotcrab.vis.ui.VisUI;
@@ -38,7 +39,7 @@ public class GameScreen implements Screen {
     public static int[][] gameField;
 
     // GDX GLTF
-    private SceneManager sceneManager;
+    private static SceneManager sceneManager;
     private Cubemap diffuseCubemap;
     private Cubemap environmentCubemap;
     private Cubemap specularCubemap;
@@ -54,11 +55,12 @@ public class GameScreen implements Screen {
     String basePath = "kenney_gltf/";
     String kenneyAssetsFile = "kenney_assets.txt";
     String[] kenneyModels;
-    HashMap<String, SceneAsset> sceneAssetHashMap;
+    static HashMap<String, SceneAsset> sceneAssetHashMap;
 
     // Grid Specifications
     private int rows = 5;
     private int cols = 5;
+    private static Vector3 groundTileDimensions;
 
     // Animation Controllers
     AnimationController bossCharacterAnimationController;
@@ -243,8 +245,33 @@ public class GameScreen implements Screen {
         // TODO: implement hide logic if needed
     }
 
+    public static void addNewTower(Vector2 coords, int towerIndex){
+        System.out.println("ficken");
+        switch(towerIndex){
+            case 1:
+                Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
+                sonicTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                sceneManager.addScene(sonicTower);
+                break;
+            case 2:
+                Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
+                canonTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                sceneManager.addScene(canonTower);
+                break;
+            case 3:
+                Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
+                bombTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                sceneManager.addScene(bombTower);
+
+
+
+
+        }
+
+    }
+
     private void createMap(SceneManager sceneManager){
-        Vector3 groundTileDimensions = createGround();
+        groundTileDimensions = createGround();
     }
 
     private Vector3 createGround(){

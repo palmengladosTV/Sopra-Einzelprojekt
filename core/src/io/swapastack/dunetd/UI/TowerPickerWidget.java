@@ -13,6 +13,7 @@ public class TowerPickerWidget extends Actor {
     private VisWindow window;
     private VisList<String> list;
     private VisTextButton b;
+    protected static boolean gfoWindowActive = false;
 
     public TowerPickerWidget(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
         this.parent = parent;
@@ -44,13 +45,17 @@ public class TowerPickerWidget extends Actor {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
                 System.out.println("Saas");
-                GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer);
             }
         });
         list.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
-
+                System.out.println("fff");
+                if(!gfoWindowActive){
+                    gfoWindowActive = true;
+                    GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer,list.getSelectedIndex());
+                }
+                list.setSelectedIndex(-1);
             }
         });
 

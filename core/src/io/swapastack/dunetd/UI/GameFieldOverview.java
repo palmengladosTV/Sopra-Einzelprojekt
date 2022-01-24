@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -19,6 +20,7 @@ import com.kotcrab.vis.ui.widget.VisWindow;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class GameFieldOverview extends Actor {
@@ -26,34 +28,52 @@ public class GameFieldOverview extends Actor {
     private Stage stage;
     private InputMultiplexer inputMultiplexer;
     private VisWindow window;
+    private final int selectedTower;
 
-    public GameFieldOverview(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
+    public GameFieldOverview(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer, int selectedTower){
         this.parent = parent;
         this.stage = stage;
         this.inputMultiplexer = inputMultiplexer;
+        this.selectedTower = selectedTower;
         setWidgets();
     }
 
     private void setWidgets() {
+        byte dimX = (byte) GameScreen.gameField.length;
+        byte dimY = (byte) GameScreen.gameField[0].length;
         window = new VisWindow("Game field overview");
-        VisImageButtonStyle style = new VisImageButtonStyle();
-        for(int i = 0; i < GameScreen.gameField.length; i++){
-            for(int j = 0; j < GameScreen.gameField[0].length; j++){
-                GameFieldButton b = new GameFieldButton(Color.ORANGE);
-                b.setSize(10f,10f);
+        for(int i = 0; i < dimX; i++){
+            for(int j = 0; j < dimY; j++){
+                Texture checkedTexture = new Texture("sprites/checked.png");
+                Texture uncheckedTexture = new Texture("sprites/unchecked.png");
+                GameFieldButton b;
+                if(GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] < 4){
+                    b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j,true);
+                    b.setDisabled(true);
+                }
+                else{
+                    b = new GameFieldButton(checkedTexture,checkedTexture,i*dimX+j,false);
+                }
+                b.setSize(20f,20f);
                 b.addListener(new ClickListener(){
                     @Override
                     public void clicked(InputEvent inputEvent, float x, float y){
-                        System.out.println("Siis");
-                        Texture texture = new Texture(Gdx.files.internal("sprites/unchecked.png"));
-                        VisImageButtonStyle iBs = new VisImageButtonStyle(new TextureRegionDrawable(new TextureRegion(texture)),new TextureRegionDrawable(new TextureRegion(texture)),new TextureRegionDrawable(new TextureRegion(texture)),new TextureRegionDrawable(new TextureRegion(texture)),new TextureRegionDrawable(new TextureRegion(texture)),new TextureRegionDrawable(new TextureRegion(texture)));
-                        b.setStyle(new VisImageButtonStyle(iBs));
+                        if(b.isChecked()){
+                            int cordX = Math.floorDiv(b.getID(),dimY);
+                            int cordY = b.getID()%dimY;
+                            GameScreen.gameField[cordX][cordY] = selectedTower + 1;
+                            window.remove();
+                            GameScreen.addNewTower(new Vector2(cordX,cordY), selectedTower+1);
+                            TowerPickerWidget.gfoWindowActive = false;
+                        }
                     }
                 });
                 window.add(b);
             }
             window.row();
         }
+        window.setSize(GameScreen.gameField[0].length*40f, GameScreen.gameField.length*40f);
+        window.setPosition(DuneTD.WIDTH / 2f - window.getWidth() / 2f, DuneTD.HEIGHT / 2f - window.getHeight() / 2f);
         inputMultiplexer.addProcessor(stage);
         stage.addActor(window);
     }

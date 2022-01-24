@@ -148,8 +148,10 @@ public class MainMenuScreen implements Screen {
                 Dialog ss = new Dialog("Initial Game Options", skin){
                    public void result(Object o){
                        try {
-                           if(Byte.parseByte(f.getText()) < 10 || Byte.parseByte(g.getText()) < 10)
-                               parent.changeScreen(ScreenEnum.GAME, Byte.parseByte(f.getText()), Byte.parseByte(g.getText()));
+                           byte dimX = Byte.parseByte(f.getText());
+                           byte dimY = Byte.parseByte(g.getText());
+                           if(dimX < 10 && dimY < 10 && dimX > 2 && dimY > 2)
+                               parent.changeScreen(ScreenEnum.GAME, dimX, dimY);
                            else
                                invalidInput();
                        }
@@ -160,7 +162,7 @@ public class MainMenuScreen implements Screen {
 
                    private void invalidInput(){
                         Dialog ii = new Dialog("Invalid Input", skin);
-                        Label il = new Label("Your input must be a\nnumber and between 2 and 10!", skin);
+                        Label il = new Label("Your input must be a valid\nnumber and between 2 and 10!", skin);
                         il.setAlignment(Align.center);
                         ii.text(il);
                         ii.button("OK");
