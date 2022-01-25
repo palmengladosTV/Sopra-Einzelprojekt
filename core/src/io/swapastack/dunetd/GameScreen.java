@@ -268,7 +268,6 @@ public class GameScreen implements Screen {
             case 1:
                 Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
                 sonicTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
-                //sonicTower.modelInstance.transform.setToTranslation(4, groundTileDimensions.y, 4);
                 sceneManager.addScene(sonicTower);
                 break;
             case 2:
@@ -285,7 +284,7 @@ public class GameScreen implements Screen {
                 Scene klopfer = new Scene(sceneAssetHashMap.get("timpalm/klopfer.glb").scene);
                 klopfer.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 klopfer.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
-                klopfer.modelInstance.transform.rotate(new Vector3(0,1,0),30);
+                klopfer.modelInstance.transform.rotate(new Vector3(0f,1f,0f),30f);
                 sceneManager.addScene(klopfer);
                 break;
             case 5:
@@ -312,7 +311,7 @@ public class GameScreen implements Screen {
             float x = current.modelInstance.transform.val[12]; //von Translation eines 3D-Objektes im Raum
             float y = current.modelInstance.transform.val[13]; //verwendet. Da steht alles drin wie Skalierung,
             float z = current.modelInstance.transform.val[14]; //Rotation etc. Für die Translation sind jedoch nur
-            if (x == coords.x && y != 0 && z == coords.y){     //die 3 Einträge in der letzten Spalte interessant.
+            if (x == coords.x && y != 0f && z == coords.y){     //die 3 Einträge in der letzten Spalte interessant.
                 sceneManager.removeScene(current);             //Also die Einträge an den Stellen 12, 13 und 14.
             }
         });

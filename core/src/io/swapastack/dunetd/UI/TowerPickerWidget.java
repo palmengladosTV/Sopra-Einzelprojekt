@@ -39,7 +39,7 @@ public class TowerPickerWidget extends Actor {
         window.add(new Separator()).pad(5).fillX().expandX().row();
         window.add(btnDestructionMode).row();
         window.add(new Separator()).pad(5).fillX().expandX().row();
-        window.add(b).colspan(2);
+        window.add(b);
         stage.addActor(window);
     }
 

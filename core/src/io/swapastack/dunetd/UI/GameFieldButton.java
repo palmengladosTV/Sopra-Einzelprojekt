@@ -12,7 +12,6 @@ public class GameFieldButton extends VisImageButton
     private Texture textureUP;
     private Texture textureDOWN;
     private int id;
-    private boolean isOccupied;
 
     public GameFieldButton(Texture textureUP, Texture textureDOWN){
         super(new SpriteDrawable(new Sprite(textureUP)), new SpriteDrawable(new Sprite(textureDOWN)));
@@ -25,7 +24,6 @@ public class GameFieldButton extends VisImageButton
         this.textureUP = textureUP;
         this.textureDOWN = textureDOWN;
         this.id = id;
-        this.isOccupied = isOccupied;
     }
 
     public int getID(){
