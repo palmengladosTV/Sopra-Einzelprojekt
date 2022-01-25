@@ -12,9 +12,6 @@ import com.kotcrab.vis.ui.widget.VisWindow;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class GameFieldOverview extends Actor {
     private final DuneTD parent;
     private Stage stage;
@@ -41,26 +38,32 @@ public class GameFieldOverview extends Actor {
                 GameFieldButton b;
 
                 if (GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] <= 3){ //Normal occupied: red circle
-                    b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j,true);
-                    b.setDisabled(true);
+                    b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j);
+                    if(TowerPickerWidget.buildMode)
+                        b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 4){ //Occupied by Klopfer: hammer sprite
                     Texture tex = new Texture ("sprites/HammerCircle.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
-                    b.setDisabled(true);
+                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    if(TowerPickerWidget.buildMode)
+                        b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 5){ //Occupied by start portal: Blue circle with 'S'
                     Texture tex = new Texture ("sprites/StartPortal.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
-                    b.setDisabled(true);
+                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    if(TowerPickerWidget.buildMode)
+                        b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 6){ //Occupied by end portal: Blue circle with 'E'
                     Texture tex = new Texture ("sprites/EndPortal.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
-                    b.setDisabled(true);
+                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    if(TowerPickerWidget.buildMode)
+                        b.setDisabled(true);
                 }
                 else{ //Default: Not Occupied by anything: Green circle
-                    b = new GameFieldButton(checkedTexture,checkedTexture,i*dimX+j,false);
+                    b = new GameFieldButton(checkedTexture,checkedTexture,i*dimX+j);
+                    if(!TowerPickerWidget.buildMode)
+                        b.setDisabled(true);
                 }
                 b.setSize(20f,20f);
                 b.addListener(new ClickListener(){
@@ -69,9 +72,12 @@ public class GameFieldOverview extends Actor {
                         if(b.isChecked()){
                             int cordX = Math.floorDiv(b.getID(),dimY);
                             int cordY = b.getID()%dimY;
-                            GameScreen.gameField[cordX][cordY] = selectedTower + 1;
                             window.remove();
-                            GameScreen.addNewTower(new Vector2(cordX,cordY), selectedTower+1);
+                            if(TowerPickerWidget.buildMode)
+                                GameScreen.addNewTower(new Vector2(cordX,cordY), selectedTower+1);
+                            else
+                                GameScreen.removeTower(new Vector2(cordX,cordY));
+                            TowerPickerWidget.buildMode = true;
                             TowerPickerWidget.gfoWindowActive = false;
                         }
                     }

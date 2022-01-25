@@ -263,10 +263,12 @@ public class GameScreen implements Screen {
     }
 
     public static void addNewTower(Vector2 coords, int towerIndex){
+        gameField[(int) coords.x][(int) coords.y] = towerIndex;
         switch(towerIndex){
             case 1:
                 Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
                 sonicTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                //sonicTower.modelInstance.transform.setToTranslation(4, groundTileDimensions.y, 4);
                 sceneManager.addScene(sonicTower);
                 break;
             case 2:
@@ -302,6 +304,20 @@ public class GameScreen implements Screen {
         }
 
     }
+
+    public static void removeTower(Vector2 coords){
+        gameField[(int) coords.x][(int) coords.y] = 0;
+        sceneManager.getRenderableProviders().forEach(s -> { //Remove object from 3D scene
+            Scene current = (Scene) s;                         //Es wird eine 4x4 Matrix zur Beschreibung
+            float x = current.modelInstance.transform.val[12]; //von Translation eines 3D-Objektes im Raum
+            float y = current.modelInstance.transform.val[13]; //verwendet. Da steht alles drin wie Skalierung,
+            float z = current.modelInstance.transform.val[14]; //Rotation etc. Für die Translation sind jedoch nur
+            if (x == coords.x && y != 0 && z == coords.y){     //die 3 Einträge in der letzten Spalte interessant.
+                sceneManager.removeScene(current);             //Also die Einträge an den Stellen 12, 13 und 14.
+            }
+        });
+    }
+
 
     private void createMap(SceneManager sceneManager){
         groundTileDimensions = createGround();

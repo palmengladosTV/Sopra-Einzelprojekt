@@ -12,8 +12,9 @@ public class TowerPickerWidget extends Actor {
     private InputMultiplexer inputMultiplexer;
     private VisWindow window;
     private VisList<String> list;
-    private VisTextButton b;
+    private VisTextButton b, btnDestructionMode;
     protected static boolean gfoWindowActive = false;
+    protected static boolean buildMode = true;
 
     public TowerPickerWidget(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
         this.parent = parent;
@@ -30,13 +31,15 @@ public class TowerPickerWidget extends Actor {
         list.setItems("Sonic Tower", "Canon Tower", "Bomb Tower", "Klopfer", "Start-Portal", "End-Portal");
         list.setSelectedIndex(-1);
         b = new VisTextButton("Spawn Enemies");
-
+        btnDestructionMode = new VisTextButton("Destroy");
     }
 
     private void configureWidgets() {
         window.add(list).row();
         window.add(new Separator()).pad(5).fillX().expandX().row();
-        window.add(b);
+        window.add(btnDestructionMode).row();
+        window.add(new Separator()).pad(5).fillX().expandX().row();
+        window.add(b).colspan(2);
         stage.addActor(window);
     }
 
@@ -46,6 +49,17 @@ public class TowerPickerWidget extends Actor {
             public void clicked(InputEvent inputEvent, float x, float y){
             }
         });
+        btnDestructionMode.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent inputEvent, float x, float y){
+                TowerPickerWidget.buildMode = false;
+                if(!gfoWindowActive){
+                    gfoWindowActive = true;
+                    GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer,list.getSelectedIndex());
+                }
+            }
+        });
+
         list.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
