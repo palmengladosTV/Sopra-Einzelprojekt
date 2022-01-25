@@ -2,7 +2,6 @@ package io.swapastack.dunetd.desktop;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.kotcrab.vis.ui.VisUI;
 import io.swapastack.dunetd.DuneTD;
 
 public class DesktopLauncher {
