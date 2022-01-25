@@ -146,32 +146,49 @@ public class GameScreen implements Screen {
         inputMultiplexer.addProcessor(gameUI.inputMultiplexerUI);
         inputMultiplexer.addProcessor(cameraInputController);
         Gdx.input.setInputProcessor(inputMultiplexer);
-
+                
         // Load all 3D models listed in kenney_assets.txt file in blocking mode
         FileHandle assetsHandle = Gdx.files.internal("kenney_assets.txt");
         String fileContent = assetsHandle.readString();
         kenneyModels = fileContent.split("\\r?\\n");
-        for (int i = 0; i < kenneyModels.length; i++) {
-            parent.assetManager.load(basePath + kenneyModels[i], SceneAsset.class);
+        for (String kenneyModel : kenneyModels) {
+            DuneTD.assetManager.load(basePath + kenneyModel, SceneAsset.class);
         }
         // Load example enemy models
-        parent.assetManager.load("faceted_character/scene.gltf", SceneAsset.class);
-        parent.assetManager.load("cute_cyborg/scene.gltf", SceneAsset.class);
-        parent.assetManager.load("spaceship_orion/scene.gltf", SceneAsset.class);
+        DuneTD.assetManager.load("faceted_character/scene.gltf", SceneAsset.class);
+        DuneTD.assetManager.load("cute_cyborg/scene.gltf", SceneAsset.class);
+        DuneTD.assetManager.load("spaceship_orion/scene.gltf", SceneAsset.class);
+
+        // Load all custom 3D models
+        DuneTD.assetManager.load("timpalm/start_portal.glb",SceneAsset.class);
+        DuneTD.assetManager.load("timpalm/end_portal.glb",SceneAsset.class);
+        DuneTD.assetManager.load("timpalm/klopfer.glb",SceneAsset.class);
+
+        // Finish up loading 3D models
         DuneTD.assetManager.finishLoading();
 
         // Create scene assets for all loaded models
         sceneAssetHashMap = new HashMap<>();
-        for (int i = 0; i < kenneyModels.length; i++) {
-            SceneAsset sceneAsset = parent.assetManager.get(basePath + kenneyModels[i], SceneAsset.class);
-            sceneAssetHashMap.put(kenneyModels[i], sceneAsset);
+        for (String kenneyModel : kenneyModels) {
+            SceneAsset sceneAsset = DuneTD.assetManager.get(basePath + kenneyModel, SceneAsset.class);
+            sceneAssetHashMap.put(kenneyModel, sceneAsset);
         }
-        SceneAsset bossCharacter = parent.assetManager.get("faceted_character/scene.gltf");
+        SceneAsset bossCharacter = DuneTD.assetManager.get("faceted_character/scene.gltf");
         sceneAssetHashMap.put("faceted_character/scene.gltf", bossCharacter);
-        SceneAsset enemyCharacter = parent.assetManager.get("cute_cyborg/scene.gltf");
+        SceneAsset enemyCharacter = DuneTD.assetManager.get("cute_cyborg/scene.gltf");
         sceneAssetHashMap.put("cute_cyborg/scene.gltf", enemyCharacter);
-        SceneAsset harvesterCharacter = parent.assetManager.get("spaceship_orion/scene.gltf");
+        SceneAsset harvesterCharacter = DuneTD.assetManager.get("spaceship_orion/scene.gltf");
         sceneAssetHashMap.put("spaceship_orion/scene.gltf", harvesterCharacter);
+
+        // Create scene assets for all loaded custom models
+        SceneAsset startPortal = DuneTD.assetManager.get("timpalm/start_portal.glb");
+        sceneAssetHashMap.put("timpalm/start_portal.glb", startPortal);
+        
+        SceneAsset endPortal = DuneTD.assetManager.get("timpalm/end_portal.glb");
+        sceneAssetHashMap.put("timpalm/end_portal.glb", endPortal);
+
+        SceneAsset klopfer = DuneTD.assetManager.get("timpalm/klopfer.glb");
+        sceneAssetHashMap.put("timpalm/klopfer.glb", klopfer);
 
         //createMapExample(sceneManager);
         createMap(sceneManager);
@@ -262,8 +279,25 @@ public class GameScreen implements Screen {
                 bombTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 sceneManager.addScene(bombTower);
                 break;
-
-
+            case 4:
+                Scene klopfer = new Scene(sceneAssetHashMap.get("timpalm/klopfer.glb").scene);
+                klopfer.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                klopfer.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
+                klopfer.modelInstance.transform.rotate(new Vector3(0,1,0),30);
+                sceneManager.addScene(klopfer);
+                break;
+            case 5:
+                Scene startPortal = new Scene(sceneAssetHashMap.get("timpalm/start_portal.glb").scene);
+                startPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
+                startPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
+                sceneManager.addScene(startPortal);
+                break;
+            case 6:
+                Scene endPortal = new Scene(sceneAssetHashMap.get("timpalm/end_portal.glb").scene);
+                endPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
+                endPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
+                sceneManager.addScene(endPortal);
+                break;
 
         }
 
@@ -307,7 +341,6 @@ public class GameScreen implements Screen {
      * This function acts as a starting point.
      * It generate a simple rectangular map with towers placed on it.
      * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
-     * @param sceneManager
      */
     private void createMapExample(SceneManager sceneManager) {
 

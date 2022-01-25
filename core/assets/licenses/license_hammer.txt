@@ -1,0 +1,232 @@
+Stock By Pixlr License Agreement.
+
+ESSENTIAL INFORMATION
+
+PLEASE READ THE FOLLOWING TERMS AND CONDITIONS OF THIS STOCK BY PIXLR LICENSE AGREEMENT (“AGREEMENT”). YOUR ACCEPTANCE OF THE TERMS AND CONDITIONS OF THIS AGREEMENT IS AN ABSOLUTE CONDITION OF YOUR USE OF THE SERVICE OF STOCK BY PIXLR.
+1.   AGREEMENT
+This is an agreement between Inmagine Lab Pte. Ltd. conducting business or transactions through and as Stock by Pixlr (“Pixlr”) at the website of https://stock.pixlr.com/ (the “Website”) and the user (“You”) who is using the Service (as defined below under Clause 4) from the Website. You may not allow anyone else to use Your user account. Each use/activity/transaction originating from Your user account will be attributed to and be held responsible by You, regardless of whether such use/activity/transaction was known to or approved by You. You must not use any automated means to access, log-in or register accounts on the Website.
+
+We reserve the right to amend, change, alter, substitute, or otherwise modify the terms and conditions of this Agreement (and other terms and conditions, guidelines, or policies at the Website) at any time (“Update”). Each Update will be dated and indicated on the Website, and such indication shall serve as effective notification to You.
+
+You have agreed to be bound by the terms and conditions of this Agreement and by using the Service from Pixlr, You acknowledge that You have read, understood, and accepted the terms and conditions of this Agreement.
+
+If You are subscribing to the Service on behalf of a licensee (“Licensee”), You hereby represent and warrant that You are authorized to act on behalf of such Licensee and have full authority to bind the Licensee to this Agreement. If the Licensee fails to abide by the Agreement, You shall be personally and fully liable on a joint and several basis for such failure and any resulting damage or claim. For the purpose of this Agreement, all terms and conditions of the Agreement as applicable to You shall apply equally to the Licensee (as the case may be).
+
+Your agreement with us includes this Agreement, Pixlr License & Service Agreement, Privacy Policy, Terms of Use and Cookie Policy (this Agreement, Pixlr License & Services Agreement, Privacy Policy, Terms of Use and Cookie Policy and any additional terms that You agree to, shall be read and construed together collectively as the “Agreements”).
+2.   PIXLR REPRESENTATION.
+
+    Pixlr represents to the best of its knowledge that it owns all rights or has all requisite authority, including all copyrights, in and to the Service or, is authorized to license the Assets (as defined below under Clause 4) under the terms and conditions of this Agreement; provided, however, that such representation will be deemed inapplicable with regards to the Service which is found to be subject to the ownership or rights of any third party (other than Pixlr) without the reasonable knowledge or fault of Pixlr. The copyright and all other rights of the Service shall remain with Pixlr and its respective suppliers. However, such representation will be deemed inapplicable with regards to the Service which does not carry the corresponding model/property release(s) in relation to the Service which prevents the Service from the intended use.
+
+    The Service is made available to You on an "AS IS", "AS AVAILABLE", and "WITH ALL FAULTS" basis. Pixlr, its employees, directors, and officers, and anyone else associated with Pixlr disclaims, to the fullest extent permitted by law, any and all warranties, express or implied, including without limitation warranties of merchantability, fitness for a particular purpose, non-infringement, or that Your usage of Pixlr will be uninterrupted, error free of computer viruses or other damaging materials. When You access and use the Service You do so at Your risk. Pixlr, its employees and officers, and anyone else acting on behalf of Pixlr also disclaims any and all common-law duties, including without limitation duties of reasonable care and workmanlike effort. Pixlr, its employees, directors, and officers, and anyone acting on behalf of Pixlr make no representation or warranty as to Your right to use any individual's name, likeness, and/or image appearing in the Service without first obtaining appropriate rights from such individuals.
+
+        You understand and acknowledge that neither Pixlr, its employees, directors, and officers, nor anyone acting on behalf of the Website has made any representation or warranty that Your use of the Service will not infringe or violate the trademark rights of any third party, or constitute a false designation of origin or any other form of unfair competition, and
+
+        You understand that You should seek competent counsel before using the Service on or in connection with any goods or services or for any other commercial purposes.
+
+3.   LICENSEE REPRESENTATION
+You represent and warrant that: -
+
+    You are sixteen (16) years old or older. If you are under sixteen (16) years old, Your use of the Service must be directly supervised by Your parent or guardian or another authorized adult (e.g. a teacher) who agrees to be bound by this Agreement;
+
+    You will not use the Service in any way that is not permitted by this Agreement;
+
+    Your use of the Service will not violate any applicable law or regulation of any country, state or other governmental entity;
+
+    Information You provide to Pixlr is accurate and true, including, without limitation, all payment and billing information; and
+
+    Except as otherwise stated in this Agreement, any account(s) opened or maintained by You on the Website will only be accessed and used by You for the purposes and on the terms stipulated in this Agreement.
+
+4.   GRANT OF LICENSE
+Subject to the terms herein, Pixlr grants You a non-exclusive, worldwide, non-transferable license to use the assets comprising of WordPress themes, WordPress plugins, templates (comprising of video, web, email and presentation templates), audio, fonts, footage, graphics, photos, 3D images and such other assets which may be introduced from time to time by Pixlr (collectively known as the “Assets”) through its subscription based service for the use of the Assets (“Service”).
+5.   PIXLR SUBSCRIBER
+This Agreement allows the creation and registration of a single user account only. You may not allow anyone else to use Your user account.
+6.   THE SERVICE
+
+    In the course of Your utilization of the Service to design and to create a genuine end-product or derivative work that has been reproduced or created by or on behalf of You (“End Product”), when You download the Assets, You are required to register for a license (“Register”) for such Assets for the particular End Product. Upon doing so, You will be granted a license from Pixlr to use such Assets for a single purpose only (which is more particularly described in Clause 7 below). For the avoidance of doubt, by downloading and/or Registering the Assets, it does not qualify You to obtain the ownership of the Assets. While using the Service, we may show You different types of Assets, however You shall have no right or license to use any of the Assets until and when all necessary Registrations have been made. Such Assets shall not be allowed to be used in isolation.
+
+    You shall abide by all copyright notices, trademark rules, and shall not use, copy, reproduce, modify, translate, publish, broadcast, transmit, distribute, perform, upload, display, license, sub-license, rent, lend, assign, gift, sell or otherwise transfer or distribute for any purposes whatsoever any portion of the Assets not owned by You: (i) without the express prior written consent of Pixlr and its respective owners or (ii) in any way that violates any third party right. You acknowledge that some fonts and symbols used during the design process might have been licensed from a third-party provider.
+
+    Under no circumstances will we be liable in any way for any Assets. You agree that You must evaluate, and bear all risks associated with the use of any Assets including, without limitation, the existence of any third-party rights that may exist in such resources.
+
+    We shall not be responsible for the accuracy of the Assets including the Assets description and any keywords provided by the owner of the Assets nor are we responsible for any component of an Assets sourced from a third party. Assets that is used by the author of the item to demonstrate how the item works (for example things like photos in themes and audio files for videos) may have been sourced from a third party and it will be your responsibility to ensure that there is an appropriate license for your intended use.
+
+7.   SINGLE USE
+
+    In accordance with this Agreement, the use of the Assets shall follow the concept of “Single Use”: -
+
+        For fonts and add-ons, the term Single Use in this context shall mean: -
+
+            such fonts and add-ons to be Installed on Your device. For clarity, “Installed” means using the font and add-ons on any electronic device for the creation of the End Product; and
+
+            the license to use such font and add-ons shall only commence upon the registration of the Installation enabling You to create the End Product.
+        For Assets other than fonts and add-ons, Single Use of the Assets to create an End Product shall mean the following: -
+
+            For an Asset that is a template, the End Product shall be a customized implementation of the Asset;
+
+            for an Asset that is an audio asset, the End Product shall be the sync of music with an audio-visual or audio-only work that incorporates the Assets as well as other Assets making it large in scope and difference in nature than the Assets; and
+
+            for other types of Assets, an End Product is a work that incorporates the Assets and other type of elements thus making it larger in scope and different in nature than the Assets.
+    For the avoidance of doubt, the license mentioned in the above Clause 7(a)(ii) shall commence when You Register the use of the Assets and will remain valid if You complete the End Product during Your subscription. You will retain all perpetual rights to the End Product even upon termination of Your subscription.
+
+8.   PERMITTED USAGE OF ASSETS
+Permitted use of the Assets shall be as follows below: -
+
+TYPE OF ASSETS	PERMITTED USES
+For fonts and add-ons only	
+
+    The fonts and add-ons can only be used by You. Such rights are not transferable even if such transfer shall be made within Your organization or to a Licensee.
+
+    Fonts and add-ons shall only be able to be used on up to two (2) computers at the same time.
+
+    No distribution, modification or derivative shall be made of the font or add-on.
+
+    Such fonts and add-ons shall only be used as a web-enabled font for Your End Product but shall not encourage or facilitate the extraction of the font or the creation of new text.
+
+Assets other than fonts or add-ons	
+
+    Creation of the End Product for Yourself or Your clientele;
+
+    Such rights remain transferable pursuant to compliance with Clause 7(a)(ii) and 7(b) above. In the event if there is any transfer of rights of the End Product to Your client, You may do so by sublicensing these rights under this Agreement in any Assets within the End Product. Such sublicense shall only be granted on the condition that the use of the Assets is limited to what use which is necessary in order to the use the End Product.
+
+    Unlimited runs for the End Product that is created using the Assets;
+
+    The right to modify or manipulate the Assets with other works for the creation of the End Product; and
+
+    In the event if an Asset contains multiple Assets, You will be required to register the Assets for each new End Product that You create.
+
+Audio Assets	You shall not have any use of the audio Assets for Broadcast purposes. The Audio Assets however may be used for purposes other than Broadcast such as for non-commercial use such as presentations (for work and school purposes): -
+
+    For movies, the End Product may not be theatrically released. This restriction does not apply to Indie films and movies;
+
+    For P.R.O. Music, such public performance rights are not included with this license;
+
+    All authorship rights shall be retained by the original author of the Assets and You shall have no rights to claim ownership of such Assets even if such Assets is modified in accordance to this Agreement.
+
+For clarity the terms mean: -
+
+“P.R.O. Music.” - If the Assets is P.R.O. Music, this means the author of the Assets is a member of a P.R.O. and/or the Assets is registered with a P.R.O. If You intend to use the P.R.O. Music in an End Product that is publicly performed or broadcast, then You may need to obtain additional performing rights from a P.R.O. and be subject to additional fees which are collected by a P.R.O. Nothing in this license acts as a waiver of any P.R.O. fees.
+
+“Broadcast”- Traditional television or radio broadcast (e.g. terrestrial, cable or satellite TV, broadcast radio); or Mobile or online substitutes for traditional television or radio broadcast (e.g. mobile TV, IPTV (streaming TV or video-ondemand), streaming radio).
+
+“Indie Film” - A film not for general theatrical release. “Indie Film” includes a student film, a film distributed on online user generated platforms, and a film festival screening.
+9.   END PRODUCT
+
+    During the course of Your use of the Assets, You agree not to create an End Product that: -
+
+        may create a risk of harm, loss, physical or mental injury, emotional distress, death, disability, disfigurement, or physical or mental illness to You or to any other person;
+
+        may create a risk of any other loss or damage to any person or property;
+
+        seeks to harm or exploit children by exposing them to inappropriate Assets, asking for personally identifiable details or otherwise;
+
+        may constitute or contribute to a crime or tort;
+
+        contains any information or Assets that Pixlr shall deem to be unlawful, harmful, abusive, racially or ethnically offensive, defamatory, infringing, invasive of personal privacy or publicity rights, harassing, humiliating to other people (publicly or otherwise), libellous, threatening, hostile, violent, or that which provokes violence or hostility, profane, or otherwise objectionable;
+
+        contains any information which discriminates against others based on race, religion, sex, sexual orientation, age, disability, ancestry or national origin;
+
+        contains any information or Assets that is illegal (including, without limitation, the disclosure of insider information under securities law or of another party’s trade secrets);
+
+        contains any information or Assets that You do not have a right to make available under any law or under contractual or fiduciary relationships; or
+
+        contains any information or Assets that You know is not correct and current.
+
+10.   THIRD PARTY RIGHTS
+
+    For certain Assets, a component of the Assets will be sourced from a third party and different license terms may apply to the component, such as someone else’s license or an open source or creative commons license. The other license will apply to that component instead of this license.
+
+    For some Assets, a GNU General Public License (GPL) or another open source license applies. The terms of any open source license will be included with the item (as a .txt file or, in some cases, embedded as part of the item itself). For any parts of the Assets subject to the open source license, those open source license terms will apply to the extent that’s determined by the open source license terms and the nature of the Assets, and this Agreement shall apply to the rest of the Assets.
+
+11.   RESTRICTIONS OF USE
+
+    During the grant of this Agreement, You shall not: -
+
+        license, sell, rent, lease, transfer, assign, distribute, host or otherwise commercially exploit any part of the Service, or any Assets displayed on the Service.;
+
+        modify or alter any part of the Service;
+
+        use the Assets for merchandising an End Product where the primary value of the product lies in the Assets itself, including: -
+
+            an End Product where the Assets serves as its core component, where without the incorporation of the Assets it would not fundamentally differ from any other product or similar nature and use; and/or
+
+            an End Product where the incorporation of the Assets is what makes the product fundamentally unique and valuable and is the main driving factor for the sale of the End Product;
+
+        access the Service through any technology or means other than the technology provided on the Service, or other authorized means Pixlr may designate;
+
+        sell access to the Service, or sell advertising, sponsorships or promotions relating to the Assets on the Service without Pixlr’s prior written approval;
+
+        redistribute the Assets or the components and the source code of the Service as stock, in a tool or template, or with source files;
+
+        use the Assets in any application allowing an end user to customize a digital or physical product to their specific needs, such as an “on demand”, “made to order” or “build it yourself” application;
+
+        permit an end user to extract the Assets and use it separately from the End Product created;
+
+        claim trademark or service marks rights or any other branding or identifiers over the Service; and
+
+        activate the “right-click” function in the Assets, remove any metadata in the Assets, or reverse engineer, decompile, or disassemble the Service to enable the download or use the Assets on a stand-alone basis; and
+
+        if the Assets contains an image of a person, even if the Assets is model-released You shall not use it in a way that creates a fake identity, implies personal endorsement of a product by the person, or in connection with sensitive subjects unless You include a statement that the image is used tor illustrative purposes only and the individual is a model.
+
+12.   UNILATERAL ACTION
+
+    You understand and agree that Pixlr may, in its sole discretion:
+
+        monitor Your activity as frequently as Pixlr in its sole discretion determines, for any violation of this Agreement;
+
+        limit the Assets and the End Product download to a fixed amount of total downloads per twenty-four (24) hour period, per user, as to ensure the best possible service to all Pixlr subscribers;
+
+        track any abuse of Your username and password in connection with the Website or in connection with this Agreement;
+
+        terminate Your account immediately if we detect You are using or are trying to use any automated means to use the Service; and
+
+        terminate Your account, without notice, if it finds what Pixlr believes to be any violation of this Agreement and/or any abuse of Your username and password. If Your account is terminated for any violation of this Agreement and/or any abuse of a username or password, You shall lose all rights to the Service and cease usage of the Service, and forfeit all fees paid.
+
+13.   TERMINATION
+
+    This Agreement is effective until it is terminated or upon You ceasing to be a subscriber to the Service.
+
+    You can terminate this Agreement by destroying the End Product derived from the Service, along with any copies or archives of it or accompanying materials (if applicable) and/or unsubscribing from the Service at any time.
+
+    We can terminate this Agreement without advance notice to You if You fail to comply with any of the terms and conditions of this Agreement. Upon such termination, You must immediately (i) cease using Pixlr and the Service for any purpose; (ii) destroy or delete copies and archives of the End Product or accompanying materials; and (iii) if requested, confirm to us in writing that You have complied with all these requirements.
+
+    Upon termination, the expiry of Your subscription, or You ceasing to be a subscriber of the Service pursuant to this Clause 13, You shall not be allowed to use the Assets for any other purposes.
+
+    We reserve the right to revoke or amend this Agreement granted to You at any time.
+
+14.   INTELLECTUAL PROPERTY RIGHTS
+You further agree that You are obtaining only a limited license to use and access the Service expressly set forth above and that no ownership rights are being conveyed to You. Pixlr shall retain all right, title and interest (including all patent, copyright, trademark, trade secret and other intellectual property rights) in and to the Services, all related and underlying technology and documentation, and any derivative works or modifications. Further, You agree that the Service is offered as an online, hosted solution and that You have no right to obtain a copy of any code underlying the Service. You may submit comments, questions, suggestions or other feedback relating to Pixlr (“Feedback”) and You agree that Pixlr may freely use, copy, disclose, prepare derivative works based on, publicly perform or display, distribute and exploit, any Feedback, bug reports or suggestions You provide to Pixlr regarding the Service, without any obligation, royalty or restriction based on intellectual property rights or otherwise.
+
+Assets that contain digital versions of real products, trademarks or other intellectual property owned by others have not been property released. It is Your responsibility to consider whether Your use of these Assets require a clearance and if so, to obtain that clearance from the intellectual property rights owner.
+15.   WARRANTY DISCLAIMER
+You agree that neither Pixlr nor their respective affiliates, nor any of their respective officers, directors, employees, owners, agents, representatives, licensors and (sub)licensees (other than You), shall be liable for any general, punitive, special, incidental, indirect or consequential damages or loss of profits or any other damages, costs or losses arising from any use or non-use of the Service even if You have been advised, or advised of the possibility, of such damages.
+16.   LICENSEE INDEMNITY.
+Notwithstanding anything to the contrary in this Agreement, You agree to fully defend, indemnify and hold Pixlr and its officers, directors, employees, owners, agents, representatives, licensors, and anyone else associated with Pixlr and each of their successors, (sub)licensees (other than You), and assigns free and harmless from any and all claims (including, without limitation, third party claims), liabilities, costs, losses, damages, or expenses, including reasonable attorneys' fees and expenses, arising in connection with Your use of the Service and the Website or any breach or alleged breach of any representation, warranty, or other promise / obligation made by You in this Agreement.
+17.   PIXLR INDEMNITY.
+Provided that You have not breached the terms of this Agreement, Pixlr agrees to defend, indemnify, and hold You harmless up to the Liability Cap (defined below). Such indemnification shall only apply to claims for damages directly attributable to Pixlr’s breach of the warranties and representations in this Agreement, together with the expenses (including reasonable attorneys' fees), arising out of or directly connected to any valid actual or threatened third party lawsuit, claim, or legal proceeding alleging that the possession, distribution, or use of the Service by You pursuant to this Agreement violate Pixlr’s warranties and representations contained herein. This indemnification is on the condition that You give Pixlr:
+
+    no later than five (5) business days written notice from the date You know or reasonably should have known of the claim or threatened claim, where such notification must include all details of the claim then known to You and is emailed to legal@pixlr.com, Attention: General Counsel;
+
+    full information, assistance, and cooperation for the defense or settlement thereof; and
+
+    at Pixlr’s option, sole control of any defense, settlement or action related thereto.
+
+    Pixlr shall not be responsible for any claim settled without Pixlr’s consent or any legal fees and/or other costs incurred prior to receiving complete notification of the claim as provided herein.
+
+18.   LIABILITY CAP
+Pixlr maximum aggregate obligation and liability to You for all claims (assessed collectively) under Clause 17 shall be limited to Twenty Five Thousand United States Dollars (US$25,000.00) or the total amount of the license fees paid by You for the Assets and/or Audio Assets, whichever the lower (“Liability Cap”).
+19.   ASSIGNMENT
+This Agreement, and any rights and licenses granted hereunder may not be transferred or assigned by You but may be assigned by Pixlr without restriction.
+20.   NO THIRD-PARTY RIGHTS
+Any person who is not a party to this Agreement (whether or not such person is named, referred to, or otherwise identified, or shall form part of a class of persons so named, referred to or identified, in this Agreement) shall have no right whatsoever to enforce this Agreement or any of its terms.
+21.   SERVICE LIMITATION AND RESTRICTIONS
+We will make reasonable efforts to keep Pixlr operational. However, certain technical difficulties or maintenance may, from time to time, result in temporary interruptions. To the extent permissible under applicable law, we reserve the right, periodically and at any time, to modify or discontinue, temporarily or permanently, functions and features of Pixlr, with or without notice, all without liability to You, except where prohibited by law, for any interruption, modification, or discontinuation of Pixlr or any function or feature thereof. Notwithstanding the foregoing, You understand, agree, and accept that We have no obligation to maintain, support, upgrade, or update Pixlr, or to provide all or any specific Assets through Pixlr. This section will be enforced to the extent permissible by applicable law. We may, from time to time, remove any of the Assets without notice to the extent permitted by applicable law.
+22.   GOVERNING LAW AND DISPUTE RESOLUTION
+This Agreement shall be governed by, and shall be construed in accordance with, the laws of Singapore. All disputes arising out of or in connection with the performance of this Agreement shall be settled through friendly negotiations. If the parties are unable to resolve any such dispute within thirty (30) days after the commencement of negotiations, the parties agree that the dispute shall be settled by arbitration in Singapore under the Singapore International Arbitration Centre (“SIAC”) administered SIAC Arbitration Rules in force when the notice of arbitration is submitted in accordance with these Rules. The number of the arbitrator shall be one (1). The language of the arbitration shall be English. The arbitral award shall be final and binding upon both parties.
+23.   ENTIRE AGREEMENT
+This Agreement constitutes the entire agreement between You and Pixlr regarding its subject matter and supersedes any previous written or oral agreement between You and Pixlr. Should any provision of this Agreement be held to be void or invalid, that fact will not affect any other provision, and the remainder of this Agreement will be deemed modified so that it is valid and enforceable to the maximum extent permitted by law. Failure by either party to enforce any provision of this Agreement will not be deemed a waiver of future enforcement of that or any other provision.
+24.   LANGUAGE
+This Agreement is written in English with a reference translation in another language (if necessary). In the event of any conflict in interpreting or construing this Agreement, the English version shall prevail.
+25.   ELECTRONIC COMMUNICATIONS
+You agree that the communications between You and Pixlr use electronic means. For contractual purposes, You (a) consent to receive communications from Pixlr in an electronic form; and (b) agree that all terms and conditions, the Agreements, notices, disclosures, and other communications that Pixlr provides to You electronically satisfy any legal requirement that such communications would satisfy if it were in a hardcopy writing. The foregoing does not affect Your non-waivable rights.
+
+Last updated: 23 July 2021

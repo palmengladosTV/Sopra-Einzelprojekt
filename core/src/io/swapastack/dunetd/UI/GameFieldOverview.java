@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.widget.VisImageButton;
 import com.kotcrab.vis.ui.widget.VisImageButton.VisImageButtonStyle;
+import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
@@ -42,16 +43,32 @@ public class GameFieldOverview extends Actor {
         byte dimX = (byte) GameScreen.gameField.length;
         byte dimY = (byte) GameScreen.gameField[0].length;
         window = new VisWindow("Game field overview");
-        for(int i = 0; i < dimX; i++){
+        for(int i = 0; i < dimX; i++){ //Add image buttons
             for(int j = 0; j < dimY; j++){
                 Texture checkedTexture = new Texture("sprites/checked.png");
                 Texture uncheckedTexture = new Texture("sprites/unchecked.png");
                 GameFieldButton b;
-                if(GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] < 4){
+
+                if (GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] <= 3){ //Normal occupied: red circle
                     b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j,true);
                     b.setDisabled(true);
                 }
-                else{
+                else if (GameScreen.gameField[i][j] == 4){ //Occupied by Klopfer: hammer sprite
+                    Texture tex = new Texture ("sprites/HammerCircle.png");
+                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
+                    b.setDisabled(true);
+                }
+                else if (GameScreen.gameField[i][j] == 5){ //Occupied by start portal: Blue circle with 'S'
+                    Texture tex = new Texture ("sprites/StartPortal.png");
+                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
+                    b.setDisabled(true);
+                }
+                else if (GameScreen.gameField[i][j] == 6){ //Occupied by end portal: Blue circle with 'E'
+                    Texture tex = new Texture ("sprites/EndPortal.png");
+                    b = new GameFieldButton(tex,tex,i*dimX+j,true);
+                    b.setDisabled(true);
+                }
+                else{ //Default: Not Occupied by anything: Green circle
                     b = new GameFieldButton(checkedTexture,checkedTexture,i*dimX+j,false);
                 }
                 b.setSize(20f,20f);
@@ -72,7 +89,16 @@ public class GameFieldOverview extends Actor {
             }
             window.row();
         }
-        window.setSize(GameScreen.gameField[0].length*40f, GameScreen.gameField.length*40f);
+        VisTextButton b = new VisTextButton("Cancel"); //Add cancel Button
+        b.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                window.remove();
+                TowerPickerWidget.gfoWindowActive = false;
+            }
+        });
+        window.add(b).right().pad(10).colspan(dimY).row();
+        window.setSize(dimY*40f, dimX*40f+b.getHeight()+10f);
         window.setPosition(DuneTD.WIDTH / 2f - window.getWidth() / 2f, DuneTD.HEIGHT / 2f - window.getHeight() / 2f);
         inputMultiplexer.addProcessor(stage);
         stage.addActor(window);

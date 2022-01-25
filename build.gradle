@@ -23,7 +23,8 @@ allprojects {
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
         // gdx gltf
-        gltfVersion = 'master-SNAPSHOT'
+        //gltfVersion = 'master-SNAPSHOT'
+        gltfVersion = '1.0.0'
         // SpaiR/imgui-java related
         lwjglVersion = '3.2.3'
         imguiVersion = '1.84.1.4'

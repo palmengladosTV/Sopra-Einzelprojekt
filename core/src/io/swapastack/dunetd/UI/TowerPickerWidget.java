@@ -44,13 +44,11 @@ public class TowerPickerWidget extends Actor {
         b.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
-                System.out.println("Saas");
             }
         });
         list.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
-                System.out.println("fff");
                 if(!gfoWindowActive){
                     gfoWindowActive = true;
                     GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer,list.getSelectedIndex());
