@@ -246,7 +246,6 @@ public class GameScreen implements Screen {
     }
 
     public static void addNewTower(Vector2 coords, int towerIndex){
-        System.out.println("ficken");
         switch(towerIndex){
             case 1:
                 Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
@@ -262,7 +261,7 @@ public class GameScreen implements Screen {
                 Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
                 bombTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 sceneManager.addScene(bombTower);
-
+                break;
 
 
 
