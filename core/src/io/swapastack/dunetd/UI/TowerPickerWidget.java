@@ -28,7 +28,7 @@ public class TowerPickerWidget extends Actor {
     private void setWidgets() {
         window = new VisWindow("Place Towers");
         list = new VisList<String>();
-        list.setItems("Sonic Tower", "Canon Tower", "Bomb Tower", "Klopfer", "Start-Portal", "End-Portal");
+        list.setItems("Sonic Tower", "Canon Tower", "Bomb Tower", "Wall", "Klopfer", "Start-Portal", "End-Portal");
         list.setSelectedIndex(-1);
         b = new VisTextButton("Spawn Enemies");
         btnDestructionMode = new VisTextButton("Destroy");

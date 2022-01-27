@@ -6,7 +6,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
+import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import io.swapastack.dunetd.DuneTD;
@@ -23,7 +28,7 @@ public class GameFieldOverview extends Actor {
         this.parent = parent;
         this.stage = stage;
         this.inputMultiplexer = inputMultiplexer;
-        this.selectedTower = selectedTower;
+        this.selectedTower = selectedTower + 1;
         setWidgets();
     }
 
@@ -37,24 +42,24 @@ public class GameFieldOverview extends Actor {
                 Texture uncheckedTexture = new Texture("sprites/unchecked.png");
                 GameFieldButton b;
 
-                if (GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] <= 3){ //Normal occupied: red circle
+                if (GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] <= 4){ //Normal occupied: red circle
                     b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j);
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
-                else if (GameScreen.gameField[i][j] == 4){ //Occupied by Klopfer: hammer sprite
+                else if (GameScreen.gameField[i][j] == 5){ //Occupied by Klopfer: hammer sprite
                     Texture tex = new Texture ("sprites/HammerCircle.png");
                     b = new GameFieldButton(tex,tex,i*dimX+j);
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
-                else if (GameScreen.gameField[i][j] == 5){ //Occupied by start portal: Blue circle with 'S'
+                else if (GameScreen.gameField[i][j] == 6){ //Occupied by start portal: Blue circle with 'S'
                     Texture tex = new Texture ("sprites/StartPortal.png");
                     b = new GameFieldButton(tex,tex,i*dimX+j);
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
-                else if (GameScreen.gameField[i][j] == 6){ //Occupied by end portal: Blue circle with 'E'
+                else if (GameScreen.gameField[i][j] == 7){ //Occupied by end portal: Blue circle with 'E'
                     Texture tex = new Texture ("sprites/EndPortal.png");
                     b = new GameFieldButton(tex,tex,i*dimX+j);
                     if(TowerPickerWidget.buildMode)
@@ -73,8 +78,21 @@ public class GameFieldOverview extends Actor {
                             int cordX = Math.floorDiv(b.getID(),dimY);
                             int cordY = b.getID()%dimY;
                             window.remove();
-                            if(TowerPickerWidget.buildMode)
-                                GameScreen.addNewTower(new Vector2(cordX,cordY), selectedTower+1);
+                            if(TowerPickerWidget.buildMode){
+                                if(GameScreen.startPortalPlaced && selectedTower == 5 || GameScreen.endPortalPlaced && selectedTower == 6){
+                                    VisDialog ii = new VisDialog("Portal placement");
+                                    VisLabel il = new VisLabel("You are not allowed to place more than one\n" +
+                                            "start portal and end portal.\n" +
+                                            "If you want to place new portals on different positions\n" +
+                                            "please destroy the old portals first.");
+                                    il.setAlignment(Align.center);
+                                    ii.text(il);
+                                    ii.button("OK");
+                                    ii.show(stage);
+                                }
+                                else
+                                    GameScreen.addNewTower(new Vector2(cordX,cordY), selectedTower);
+                            }
                             else
                                 GameScreen.removeTower(new Vector2(cordX,cordY));
                             TowerPickerWidget.buildMode = true;

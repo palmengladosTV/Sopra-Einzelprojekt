@@ -37,6 +37,8 @@ public class GameScreen implements Screen {
     private final DuneTD parent;
 
     public static int[][] gameField;
+    public static boolean startPortalPlaced = false;
+    public static boolean endPortalPlaced = false;
 
     // GDX GLTF
     private static SceneManager sceneManager;
@@ -281,19 +283,26 @@ public class GameScreen implements Screen {
                 sceneManager.addScene(bombTower);
                 break;
             case 4:
+                Scene wall = new Scene(sceneAssetHashMap.get("towerRound_roofB.glb").scene);
+                wall.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
+                sceneManager.addScene(wall);
+                break;
+            case 5:
                 Scene klopfer = new Scene(sceneAssetHashMap.get("timpalm/klopfer.glb").scene);
                 klopfer.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 klopfer.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
                 klopfer.modelInstance.transform.rotate(new Vector3(0f,1f,0f),30f);
                 sceneManager.addScene(klopfer);
                 break;
-            case 5:
+            case 6:
+                startPortalPlaced = true;
                 Scene startPortal = new Scene(sceneAssetHashMap.get("timpalm/start_portal.glb").scene);
                 startPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 startPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
                 sceneManager.addScene(startPortal);
                 break;
-            case 6:
+            case 7:
+                endPortalPlaced = true;
                 Scene endPortal = new Scene(sceneAssetHashMap.get("timpalm/end_portal.glb").scene);
                 endPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 endPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
@@ -305,13 +314,19 @@ public class GameScreen implements Screen {
     }
 
     public static void removeTower(Vector2 coords){
+        if (gameField[(int) coords.x][(int) coords.y] == 6)
+            startPortalPlaced = false;
+        else if (gameField[(int) coords.x][(int) coords.y] == 7){
+            endPortalPlaced = false;
+        }
+
         gameField[(int) coords.x][(int) coords.y] = 0;
         sceneManager.getRenderableProviders().forEach(s -> { //Remove object from 3D scene
             Scene current = (Scene) s;                         //Es wird eine 4x4 Matrix zur Beschreibung
             float x = current.modelInstance.transform.val[12]; //von Translation eines 3D-Objektes im Raum
             float y = current.modelInstance.transform.val[13]; //verwendet. Da steht alles drin wie Skalierung,
             float z = current.modelInstance.transform.val[14]; //Rotation etc. Für die Translation sind jedoch nur
-            if (x == coords.x && y != 0f && z == coords.y){     //die 3 Einträge in der letzten Spalte interessant.
+            if (x == coords.x && y != 0f && z == coords.y){    //die 3 Einträge in der letzten Spalte interessant.
                 sceneManager.removeScene(current);             //Also die Einträge an den Stellen 12, 13 und 14.
             }
         });
