@@ -15,6 +15,7 @@ import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.UI.GameUI;
+import io.swapastack.dunetd.util.PortalPathFinder;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -24,8 +25,7 @@ import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * The GameScreen class.
@@ -39,6 +39,8 @@ public class GameScreen implements Screen {
     public static int[][] gameField;
     public static boolean startPortalPlaced = false;
     public static boolean endPortalPlaced = false;
+
+    private static LinkedList<Vector2> path;
 
     // GDX GLTF
     private static SceneManager sceneManager;
@@ -266,6 +268,7 @@ public class GameScreen implements Screen {
 
     public static void addNewTower(Vector2 coords, int towerIndex){
         gameField[(int) coords.x][(int) coords.y] = towerIndex;
+        coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
         switch(towerIndex){
             case 1:
                 Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
@@ -308,7 +311,6 @@ public class GameScreen implements Screen {
                 endPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
                 sceneManager.addScene(endPortal);
                 break;
-
         }
 
     }
@@ -321,6 +323,8 @@ public class GameScreen implements Screen {
         }
 
         gameField[(int) coords.x][(int) coords.y] = 0;
+        coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
+
         sceneManager.getRenderableProviders().forEach(s -> { //Remove object from 3D scene
             Scene current = (Scene) s;                         //Es wird eine 4x4 Matrix zur Beschreibung
             float x = current.modelInstance.transform.val[12]; //von Translation eines 3D-Objektes im Raum
@@ -332,6 +336,32 @@ public class GameScreen implements Screen {
         });
     }
 
+    public static void createPath(){
+        path = PortalPathFinder.findShortestPath(Arrays.stream(gameField).map(int[]::clone).toArray(int[][]::new));
+        path.forEach(v ->{
+            v.x = gameField.length - 1 - v.x;
+        });
+
+        HashSet<Scene> snowTiles = new HashSet<Scene>();
+
+        path.forEach(v ->{
+            sceneManager.getRenderableProviders().forEach(s -> {
+                Scene current = (Scene) s;
+                float x = current.modelInstance.transform.val[12];
+                float y = current.modelInstance.transform.val[13];
+                float z = current.modelInstance.transform.val[14];
+
+                if (x == v.x && y == 0f && z == v.y && !snowTiles.contains(current)){
+                    sceneManager.removeScene(current);
+                    Scene pathGround = new Scene(sceneAssetHashMap.get("snow_tile.glb").scene);
+                    pathGround.modelInstance.transform.setToTranslation(v.x, 0f, v.y);
+                    pathGround.modelInstance.transform.scale(1,0.5f, 1);
+                    snowTiles.add(pathGround);
+                    sceneManager.addScene(pathGround);
+                }
+            });
+        });
+    }
 
     private void createMap(SceneManager sceneManager){
         groundTileDimensions = createGround();

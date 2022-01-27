@@ -1,10 +1,18 @@
 package io.swapastack.dunetd.UI;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
 import io.swapastack.dunetd.DuneTD;
+import io.swapastack.dunetd.GameScreen;
+import io.swapastack.dunetd.util.PortalPathFinder;
+
+import java.util.LinkedList;
+import java.util.Vector;
 
 public class TowerPickerWidget extends Actor {
     private final DuneTD parent;
@@ -47,6 +55,16 @@ public class TowerPickerWidget extends Actor {
         b.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
+                if(GameScreen.startPortalPlaced && GameScreen.endPortalPlaced)
+                    GameScreen.createPath();
+                else{
+                    VisDialog ii = new VisDialog("Portal placement");
+                    VisLabel il = new VisLabel("You have to place a start portal\nand an end portal first!");
+                    il.setAlignment(Align.center);
+                    ii.text(il);
+                    ii.button("OK");
+                    ii.show(stage);
+                }
             }
         });
         btnDestructionMode.addListener(new ClickListener(){

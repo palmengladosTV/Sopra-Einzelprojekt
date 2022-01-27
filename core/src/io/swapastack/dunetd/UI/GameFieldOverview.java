@@ -43,30 +43,30 @@ public class GameFieldOverview extends Actor {
                 GameFieldButton b;
 
                 if (GameScreen.gameField[i][j] > 0 && GameScreen.gameField[i][j] <= 4){ //Normal occupied: red circle
-                    b = new GameFieldButton(uncheckedTexture,uncheckedTexture,i*dimX+j);
+                    b = new GameFieldButton(uncheckedTexture,uncheckedTexture,new Vector2(i,j));
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 5){ //Occupied by Klopfer: hammer sprite
                     Texture tex = new Texture ("sprites/HammerCircle.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    b = new GameFieldButton(tex,tex,new Vector2(i,j));
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 6){ //Occupied by start portal: Blue circle with 'S'
                     Texture tex = new Texture ("sprites/StartPortal.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    b = new GameFieldButton(tex,tex,new Vector2(i,j));
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
                 else if (GameScreen.gameField[i][j] == 7){ //Occupied by end portal: Blue circle with 'E'
                     Texture tex = new Texture ("sprites/EndPortal.png");
-                    b = new GameFieldButton(tex,tex,i*dimX+j);
+                    b = new GameFieldButton(tex,tex,new Vector2(i,j));
                     if(TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
                 else{ //Default: Not Occupied by anything: Green circle
-                    b = new GameFieldButton(checkedTexture,checkedTexture,i*dimX+j);
+                    b = new GameFieldButton(checkedTexture,checkedTexture,new Vector2(i,j));
                     if(!TowerPickerWidget.buildMode)
                         b.setDisabled(true);
                 }
@@ -75,11 +75,11 @@ public class GameFieldOverview extends Actor {
                     @Override
                     public void clicked(InputEvent inputEvent, float x, float y){
                         if(b.isChecked()){
-                            int cordX = Math.floorDiv(b.getID(),dimY);
-                            int cordY = b.getID()%dimY;
+                            byte cordX = (byte) b.getID().x;
+                            byte cordY = (byte) b.getID().y;
                             window.remove();
                             if(TowerPickerWidget.buildMode){
-                                if(GameScreen.startPortalPlaced && selectedTower == 5 || GameScreen.endPortalPlaced && selectedTower == 6){
+                                if(GameScreen.startPortalPlaced && selectedTower == 6 || GameScreen.endPortalPlaced && selectedTower == 7){
                                     VisDialog ii = new VisDialog("Portal placement");
                                     VisLabel il = new VisLabel("You are not allowed to place more than one\n" +
                                             "start portal and end portal.\n" +
@@ -110,6 +110,7 @@ public class GameFieldOverview extends Actor {
             public void clicked(InputEvent event, float x, float y){
                 window.remove();
                 TowerPickerWidget.gfoWindowActive = false;
+                TowerPickerWidget.buildMode = true;
             }
         });
         window.add(b).right().pad(10).colspan(dimY).row();
