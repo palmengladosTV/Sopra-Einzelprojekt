@@ -9,12 +9,16 @@ import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.UI.GameUI;
+import io.swapastack.dunetd.UI.TowerPickerWidget;
 import io.swapastack.dunetd.util.PortalPathFinder;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
@@ -36,9 +40,12 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
 
+    public static int waveNumber;
+
     public static int[][] gameField;
     public static boolean startPortalPlaced = false;
     public static boolean endPortalPlaced = false;
+    public static boolean allowEnemySpawn = false;
 
     private static LinkedList<Vector2> path;
 
@@ -266,6 +273,40 @@ public class GameScreen implements Screen {
         // TODO: implement hide logic if needed
     }
 
+    private void createMap(SceneManager sceneManager){
+        gameField = new int[rows][cols];
+        groundTileDimensions = createGround();
+    }
+
+    private static Vector3 createGround(){
+        Vector3 groundTileDimensions = new Vector3();
+
+        // Simple way to generate the example map
+        for (int i = 0; i < rows; i++) {
+            for (int k = 0; k < cols; k++) {
+                // Create a new Scene object from the tile_dirt gltf model
+                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
+                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
+                BoundingBox boundingBox = new BoundingBox();
+                // Calculate the BoundingBox from the given ModelInstance
+                gridTile.modelInstance.calculateBoundingBox(boundingBox);
+                // Create Vector3 to store the ModelInstance dimensions
+                Vector3 modelDimensions = new Vector3();
+                // Read the ModelInstance BoundingBox dimensions
+                boundingBox.getDimensions(modelDimensions);
+                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
+                groundTileDimensions.set(modelDimensions);
+                // Set the ModelInstance to the respective row and cell of the map
+                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+                // Add the Scene object to the SceneManager for rendering
+                sceneManager.addScene(gridTile);
+                // it could be useful to store the Scene object reference outside this method
+            }
+        }
+
+        return groundTileDimensions;
+    }
+
     public static void addNewTower(Vector2 coords, int towerIndex){
         gameField[(int) coords.x][(int) coords.y] = towerIndex;
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
@@ -340,6 +381,19 @@ public class GameScreen implements Screen {
 
     public static void createPath(){
         path = PortalPathFinder.findShortestPath(Arrays.stream(gameField).map(int[]::clone).toArray(int[][]::new));
+        if(path.size() <= 1){
+            VisDialog ii = new VisDialog("Path error");
+            VisLabel il = new VisLabel("Couldn't find a path from the start portal\n" +
+                    "to the end portal. Please make sure that it is possible to get\n" +
+                    "from the start portal to the end portal");
+            il.setAlignment(Align.center);
+            ii.text(il);
+            ii.button("OK");
+            GameUI.showDialog(ii);
+            TowerPickerWidget.b.setText("Initialize wave");
+            TowerPickerWidget.waveReady = false;
+            return;
+        }
         path.forEach(v ->{
             v.x = gameField.length - 1 - v.x;
         });
@@ -374,38 +428,8 @@ public class GameScreen implements Screen {
         });
     }
 
-    private void createMap(SceneManager sceneManager){
-        gameField = new int[rows][cols];
-        groundTileDimensions = createGround();
-    }
+    public static void spawnEnemies(){
 
-    private static Vector3 createGround(){
-        Vector3 groundTileDimensions = new Vector3();
-
-        // Simple way to generate the example map
-        for (int i = 0; i < rows; i++) {
-            for (int k = 0; k < cols; k++) {
-                // Create a new Scene object from the tile_dirt gltf model
-                Scene gridTile = new Scene(sceneAssetHashMap.get("tile_dirt.glb").scene);
-                // Create a new BoundingBox, this is useful to check collisions or to get the model dimensions
-                BoundingBox boundingBox = new BoundingBox();
-                // Calculate the BoundingBox from the given ModelInstance
-                gridTile.modelInstance.calculateBoundingBox(boundingBox);
-                // Create Vector3 to store the ModelInstance dimensions
-                Vector3 modelDimensions = new Vector3();
-                // Read the ModelInstance BoundingBox dimensions
-                boundingBox.getDimensions(modelDimensions);
-                // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
-                groundTileDimensions.set(modelDimensions);
-                // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
-                // Add the Scene object to the SceneManager for rendering
-                sceneManager.addScene(gridTile);
-                // it could be useful to store the Scene object reference outside this method
-            }
-        }
-
-        return groundTileDimensions;
     }
 
     /**

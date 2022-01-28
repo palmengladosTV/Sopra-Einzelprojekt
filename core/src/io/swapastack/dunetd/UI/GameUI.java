@@ -4,11 +4,12 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisDialog;
 import io.swapastack.dunetd.DuneTD;
 
 public class GameUI {
     private final DuneTD parent;
-    public Stage stage;
+    public static Stage stage;
     public TowerPickerWidget tpw;
     public InputMultiplexer inputMultiplexerUI;
 
@@ -29,6 +30,11 @@ public class GameUI {
         tpw.setSize(150,280);
         tpw.setPosition(40, 180);
     }
+
+    public static void showDialog(VisDialog d){
+        d.show(stage);
+    }
+
     public void update(float delta){
         stage.act(delta);
 

@@ -21,10 +21,10 @@ public class TowerPickerWidget extends Actor {
     private VisWindow window;
     private VisList<String> list;
     private VisTextButton btnDestructionMode;
-    protected static VisTextButton b;
+    public static VisTextButton b;
     protected static boolean gfoWindowActive = false;
     protected static boolean buildMode = true;
-    protected static boolean waveReady = false;
+    public static boolean waveReady = false;
 
     public TowerPickerWidget(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
         this.parent = parent;
@@ -60,7 +60,9 @@ public class TowerPickerWidget extends Actor {
                 if(waveReady){
                     waveReady = false;
                     b.setText("Initialize wave");
-                    //TODO: Add enemy mechanic
+                    window.getTitleLabel().setText("Window disabled!");
+                    window.setTouchable(Touchable.disabled);
+                    GameScreen.allowEnemySpawn = true;
                 }
                 else{
                     if(GameScreen.startPortalPlaced && GameScreen.endPortalPlaced){
