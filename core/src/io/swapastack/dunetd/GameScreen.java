@@ -19,6 +19,8 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.UI.GameUI;
 import io.swapastack.dunetd.UI.TowerPickerWidget;
+import io.swapastack.dunetd.util.Enemy;
+import io.swapastack.dunetd.util.Infantry;
 import io.swapastack.dunetd.util.PortalPathFinder;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
@@ -45,9 +47,12 @@ public class GameScreen implements Screen {
     public static int[][] gameField;
     public static boolean startPortalPlaced = false;
     public static boolean endPortalPlaced = false;
-    public static boolean allowEnemySpawn = false;
+    private static boolean allowEnemySpawn = false;
+    private static byte frameInterval;
 
     private static LinkedList<Vector2> path;
+
+    private static ArrayList<Enemy> currentWaveEnemies;
 
     // GDX GLTF
     private static SceneManager sceneManager;
@@ -66,12 +71,12 @@ public class GameScreen implements Screen {
     String basePath = "kenney_gltf/";
     String kenneyAssetsFile = "kenney_assets.txt";
     String[] kenneyModels;
-    static HashMap<String, SceneAsset> sceneAssetHashMap;
+    public static HashMap<String, SceneAsset> sceneAssetHashMap;
 
     // Grid Specifications
     private static int rows = 5;
     private static int cols = 5;
-    private static Vector3 groundTileDimensions;
+    public static Vector3 groundTileDimensions;
 
     // Animation Controllers
     AnimationController bossCharacterAnimationController;
@@ -88,6 +93,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(DuneTD parent) {
         this.parent = parent;
+        frameInterval = 0;
         initGameUI();
     }
 
@@ -95,6 +101,7 @@ public class GameScreen implements Screen {
         this.parent = parent;
         rows = fieldX;
         cols = fieldY;
+        frameInterval = 0;
         initGameUI();
     }
 
@@ -249,6 +256,9 @@ public class GameScreen implements Screen {
 
         //Draw UI
         gameUI.render();
+
+        if(allowEnemySpawn)
+            spawnEnemies();
     }
 
     @Override
@@ -428,7 +438,26 @@ public class GameScreen implements Screen {
         });
     }
 
+    public static void createEnemies(){
+        currentWaveEnemies = new ArrayList<Enemy>();
+        for(int i = 0; i < 10; i++){
+            Enemy current;
+            current = new Infantry(100, 5);
+            current.setModelToPosition(new Vector3(path.get(0).x,groundTileDimensions.y,path.get(0).y));
+            currentWaveEnemies.add(current);
+        }
+        allowEnemySpawn = true;
+    }
+
     public static void spawnEnemies(){
+        frameInterval++;
+        if(frameInterval % 5 != 0){
+            return;
+        }
+        frameInterval = 0;
+        for(int i = 0; i < currentWaveEnemies.size(); i++){
+            sceneManager.addScene(currentWaveEnemies.get(i).getModel());
+        }
 
     }
 

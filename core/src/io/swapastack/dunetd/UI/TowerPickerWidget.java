@@ -62,7 +62,7 @@ public class TowerPickerWidget extends Actor {
                     b.setText("Initialize wave");
                     window.getTitleLabel().setText("Window disabled!");
                     window.setTouchable(Touchable.disabled);
-                    GameScreen.allowEnemySpawn = true;
+                    GameScreen.createEnemies();
                 }
                 else{
                     if(GameScreen.startPortalPlaced && GameScreen.endPortalPlaced){
