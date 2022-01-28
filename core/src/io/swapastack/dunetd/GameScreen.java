@@ -62,8 +62,8 @@ public class GameScreen implements Screen {
     static HashMap<String, SceneAsset> sceneAssetHashMap;
 
     // Grid Specifications
-    private int rows = 5;
-    private int cols = 5;
+    private static int rows = 5;
+    private static int cols = 5;
     private static Vector3 groundTileDimensions;
 
     // Animation Controllers
@@ -86,8 +86,8 @@ public class GameScreen implements Screen {
 
     public GameScreen(DuneTD parent, byte fieldX, byte fieldY) {
         this.parent = parent;
-        this.rows = fieldX;
-        this.cols = fieldY;
+        rows = fieldX;
+        cols = fieldY;
         initGameUI();
     }
 
@@ -227,11 +227,11 @@ public class GameScreen implements Screen {
         ImGui.text(String.format(Locale.US,"deltaTime: %1.6f", delta));
         ImGui.end();
 
-        ImGui.begin("Menu", ImGuiWindowFlags.AlwaysAutoResize);
+        /*ImGui.begin("Menu", ImGuiWindowFlags.AlwaysAutoResize);
         if (ImGui.button("Back to menu")) {
             parent.changeScreen(ScreenEnum.MENU);
         }
-        ImGui.end();
+        ImGui.end();*/
 
         // SpaiR/imgui-java
         ImGui.render();
@@ -302,6 +302,7 @@ public class GameScreen implements Screen {
                 Scene startPortal = new Scene(sceneAssetHashMap.get("timpalm/start_portal.glb").scene);
                 startPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 startPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
+                startPortal.modelInstance.transform.rotate(0f,1f,0f, 270f);
                 sceneManager.addScene(startPortal);
                 break;
             case 7:
@@ -309,6 +310,7 @@ public class GameScreen implements Screen {
                 Scene endPortal = new Scene(sceneAssetHashMap.get("timpalm/end_portal.glb").scene);
                 endPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 endPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
+                endPortal.modelInstance.transform.rotate(0f,1f,0f, 270f);
                 sceneManager.addScene(endPortal);
                 break;
         }
@@ -342,6 +344,15 @@ public class GameScreen implements Screen {
             v.x = gameField.length - 1 - v.x;
         });
 
+        for (int i = sceneManager.getRenderableProviders().size - 1; i >= 0; i--){
+            Scene current = (Scene) sceneManager.getRenderableProviders().get(i);
+            float y = current.modelInstance.transform.val[13];
+            if(y == 0f)
+                sceneManager.removeScene(current);
+        }
+
+        createGround();
+
         HashSet<Scene> snowTiles = new HashSet<Scene>();
 
         path.forEach(v ->{
@@ -364,12 +375,12 @@ public class GameScreen implements Screen {
     }
 
     private void createMap(SceneManager sceneManager){
+        gameField = new int[rows][cols];
         groundTileDimensions = createGround();
     }
 
-    private Vector3 createGround(){
+    private static Vector3 createGround(){
         Vector3 groundTileDimensions = new Vector3();
-        gameField = new int[rows][cols];
 
         // Simple way to generate the example map
         for (int i = 0; i < rows; i++) {

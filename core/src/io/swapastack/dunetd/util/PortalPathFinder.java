@@ -9,9 +9,11 @@ public class PortalPathFinder {
 
     private static LinkedList<Vector2> path = new LinkedList<Vector2>();
     private static byte dimX, dimY;
-    private static byte currentMin = Byte.MAX_VALUE;
+    private static byte currentMin;
 
     public static LinkedList<Vector2> findShortestPath(int[][] gameField){
+        path.clear();
+        currentMin = Byte.MAX_VALUE;
         dimX = (byte) gameField.length;
         dimY = (byte) gameField[0].length;
         Vector2 startPos = new Vector2(0,0),

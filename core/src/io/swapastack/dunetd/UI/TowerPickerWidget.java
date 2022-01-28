@@ -20,9 +20,11 @@ public class TowerPickerWidget extends Actor {
     private InputMultiplexer inputMultiplexer;
     private VisWindow window;
     private VisList<String> list;
-    private VisTextButton b, btnDestructionMode;
+    private VisTextButton btnDestructionMode;
+    protected static VisTextButton b;
     protected static boolean gfoWindowActive = false;
     protected static boolean buildMode = true;
+    protected static boolean waveReady = false;
 
     public TowerPickerWidget(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
         this.parent = parent;
@@ -38,7 +40,7 @@ public class TowerPickerWidget extends Actor {
         list = new VisList<String>();
         list.setItems("Sonic Tower", "Canon Tower", "Bomb Tower", "Wall", "Klopfer", "Start-Portal", "End-Portal");
         list.setSelectedIndex(-1);
-        b = new VisTextButton("Spawn Enemies");
+        b = new VisTextButton("Initialize wave");
         btnDestructionMode = new VisTextButton("Destroy");
     }
 
@@ -55,16 +57,27 @@ public class TowerPickerWidget extends Actor {
         b.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
-                if(GameScreen.startPortalPlaced && GameScreen.endPortalPlaced)
-                    GameScreen.createPath();
-                else{
-                    VisDialog ii = new VisDialog("Portal placement");
-                    VisLabel il = new VisLabel("You have to place a start portal\nand an end portal first!");
-                    il.setAlignment(Align.center);
-                    ii.text(il);
-                    ii.button("OK");
-                    ii.show(stage);
+                if(waveReady){
+                    waveReady = false;
+                    b.setText("Initialize wave");
+                    //TODO: Add enemy mechanic
                 }
+                else{
+                    if(GameScreen.startPortalPlaced && GameScreen.endPortalPlaced){
+                        b.setText("Start wave");
+                        waveReady = true;
+                        GameScreen.createPath();
+                    }
+                    else{
+                        VisDialog ii = new VisDialog("Portal placement");
+                        VisLabel il = new VisLabel("You have to place a start portal\nand an end portal first!");
+                        il.setAlignment(Align.center);
+                        ii.text(il);
+                        ii.button("OK");
+                        ii.show(stage);
+                    }
+                }
+
             }
         });
         btnDestructionMode.addListener(new ClickListener(){
@@ -104,5 +117,6 @@ public class TowerPickerWidget extends Actor {
         super.setSize(width,height);
         window.setSize(width,height);
     }
+
 
 }

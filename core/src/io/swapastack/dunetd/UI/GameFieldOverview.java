@@ -78,6 +78,8 @@ public class GameFieldOverview extends Actor {
                             byte cordX = (byte) b.getID().x;
                             byte cordY = (byte) b.getID().y;
                             window.remove();
+                            TowerPickerWidget.waveReady = false;
+                            TowerPickerWidget.b.setText("Initialize wave");
                             if(TowerPickerWidget.buildMode){
                                 if(GameScreen.startPortalPlaced && selectedTower == 6 || GameScreen.endPortalPlaced && selectedTower == 7){
                                     VisDialog ii = new VisDialog("Portal placement");
