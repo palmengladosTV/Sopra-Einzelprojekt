@@ -4,12 +4,14 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Null;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -28,7 +30,10 @@ import net.mgsx.gltf.scene3d.scene.SceneAsset;
 import net.mgsx.gltf.scene3d.scene.SceneManager;
 import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
+import org.decimal4j.util.DoubleRounder;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -49,10 +54,12 @@ public class GameScreen implements Screen {
     public static boolean endPortalPlaced = false;
     private static boolean allowEnemySpawn = false;
     private static byte frameInterval;
+    private static long frames;
 
     private static LinkedList<Vector2> path;
 
-    private static ArrayList<Enemy> currentWaveEnemies;
+    private static ArrayList<Enemy> currentWaveEnemyPile;
+    private static ArrayList<Enemy> currentWaveEnemiesSpawned;
 
     // GDX GLTF
     private static SceneManager sceneManager;
@@ -209,6 +216,7 @@ public class GameScreen implements Screen {
         sceneAssetHashMap.put("timpalm/klopfer.glb", klopfer);
 
         //createMapExample(sceneManager);
+
         createMap(sceneManager);
 
     }
@@ -258,7 +266,7 @@ public class GameScreen implements Screen {
         gameUI.render();
 
         if(allowEnemySpawn)
-            spawnEnemies();
+            moveEnemies();
     }
 
     @Override
@@ -307,7 +315,7 @@ public class GameScreen implements Screen {
                 // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
                 groundTileDimensions.set(modelDimensions);
                 // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(i * modelDimensions.x, 0.0f,k * modelDimensions.z);
+                gridTile.modelInstance.transform.setToTranslation(i * modelDimensions.x, 0.0f, k * modelDimensions.z);
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
                 // it could be useful to store the Scene object reference outside this method
@@ -450,25 +458,82 @@ public class GameScreen implements Screen {
         });
     }
 
+    @SuppressWarnings("unchecked")
     public static void createEnemies(){
-        currentWaveEnemies = new ArrayList<Enemy>();
+        currentWaveEnemyPile = new ArrayList<Enemy>();
         for(int i = 0; i < 10; i++){
             Enemy current;
-            current = new Infantry(100, 5);
-            current.setModelToPosition(new Vector3(path.get(0).x,groundTileDimensions.y,path.get(0).y));
-            currentWaveEnemies.add(current);
+            current = new Infantry(100, 5, path.get(0), (LinkedList<Vector2>) path.clone());
+            //current.setModelToPosition(new Vector3(path.get(0).x,groundTileDimensions.y,path.get(0).y));
+            current.setModelToPosition();
+            currentWaveEnemyPile.add(current);
         }
+        frameInterval = 0;
+        frames = -1;
+        currentWaveEnemiesSpawned = new ArrayList<Enemy>();
         allowEnemySpawn = true;
     }
 
-    public static void spawnEnemies(){
+    public static void moveEnemies(){
         frameInterval++;
-        if(frameInterval % 5 != 0){
+        if(frameInterval % 20 != 0){
             return;
         }
         frameInterval = 0;
-        for(int i = 0; i < currentWaveEnemies.size(); i++){
-            sceneManager.addScene(currentWaveEnemies.get(i).getModel());
+        frames++;
+
+        Enemy removedEnemy = null;
+
+        for (Enemy currentEnemy : currentWaveEnemiesSpawned){
+        //for (int i = 0; i < currentWaveEnemiesSpawned.size(); i++){
+            //Enemy currentEnemy = currentWaveEnemiesSpawned.get(i);
+            sceneManager.removeScene(currentEnemy.getModel());
+            float currentX = (float) DoubleRounder.round(currentEnemy.getCoords().x, 4);
+            float currentY = (float) DoubleRounder.round(currentEnemy.getCoords().y, 4);
+
+            if(new Vector2(currentX,currentY).equals(currentEnemy.destination.getFirst()))
+                currentEnemy.destination.removeFirst();
+
+            if(currentEnemy.destination.isEmpty()){
+                //TODO: Enemy ist am End-Portal angelangt
+                removedEnemy = currentEnemy;
+                continue;
+            }
+
+            byte seconadaryVelocity = 100;
+            float totalVelocity = (float) currentEnemy.getVelocity()/seconadaryVelocity;
+            //System.out.println("Enemy Number: " + i + " Dest. Size: " + currentEnemy.destination.size() + " X:" + currentX + " Z: " + currentY);
+
+            if(currentX < currentEnemy.destination.getFirst().x){
+                currentEnemy.setCoords(currentX + totalVelocity, currentY);
+                currentEnemy.moveModel(totalVelocity, 0f);
+            }
+            if(currentX > currentEnemy.destination.getFirst().x){
+                currentEnemy.setCoords(currentX - totalVelocity, currentY);
+                currentEnemy.moveModel(-totalVelocity, 0f);
+            }
+            if(currentY < currentEnemy.destination.getFirst().y){
+                currentEnemy.setCoords(currentX, currentY + totalVelocity);
+                currentEnemy.moveModel(0f, totalVelocity);
+            }
+            if(currentY > currentEnemy.destination.getFirst().y){
+                currentEnemy.setCoords(currentX, currentY - totalVelocity);
+                currentEnemy.moveModel(0f, -totalVelocity);
+            }
+
+            sceneManager.addScene(currentEnemy.getModel());
+        }
+
+        try {
+            currentWaveEnemiesSpawned.remove(removedEnemy);
+        } catch (NullPointerException ignored) { }
+
+        short spawnIntervall = 10;
+        if(frames % spawnIntervall == 0 && frames / spawnIntervall < currentWaveEnemyPile.size()){
+            Enemy currentEnemy = currentWaveEnemyPile.get((int) frames/spawnIntervall);
+            currentWaveEnemyPile.remove(currentEnemy);
+            currentWaveEnemiesSpawned.add(currentEnemy);
+            sceneManager.addScene(currentEnemy.getModel());
         }
 
     }

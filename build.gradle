@@ -87,6 +87,8 @@ project(":core") {
 
         compile "com.kotcrab.vis:vis-ui:$visuiVersion"
 
+        compile 'org.decimal4j:decimal4j:1.0.3'
+
         // google/gson
         implementation 'com.google.code.gson:gson:2.8.6'
 

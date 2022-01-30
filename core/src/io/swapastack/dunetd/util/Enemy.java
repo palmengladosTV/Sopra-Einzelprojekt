@@ -1,16 +1,25 @@
 package io.swapastack.dunetd.util;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
+import org.graalvm.compiler.lir.amd64.vector.AMD64VectorMove;
 
-public abstract class Enemy {
+import java.util.LinkedList;
+
+public abstract class Enemy{
     int livePoints;
     int velocity;
+    public LinkedList<Vector2> destination;
+    Vector2 coords;
     Scene model;
 
-    public Enemy(int livePoints, int velocity){
+    public Enemy(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path){
         this.livePoints = livePoints;
         this.velocity = velocity;
+        this.coords = coords;
+        this.destination = path;
     }
 
     public int getLivePoints() {
@@ -41,12 +50,37 @@ public abstract class Enemy {
         this.model = model;
     }
 
+    @Deprecated
     public void setModelToPosition(Vector3 coords){
+        coords.x = GameScreen.gameField.length - 1 - coords.x;
         this.model.modelInstance.transform.translate(coords);
     }
 
+    public void setModelToPosition(){
+        //float x = GameScreen.gameField.length - 1 - this.coords.x;
+        float x = this.coords.x;
+        this.model.modelInstance.transform.translate(x,GameScreen.groundTileDimensions.y,this.coords.y);
+    }
 
+    public void moveModel(float x, float z){
+        this.model.modelInstance.transform.trn(x, 0f, z);
+    }
 
+    public void rotateModel(float degrees){
+        this.model.modelInstance.transform.rotate(0f,1f,0f,degrees);
+    }
+
+    public Vector2 getCoords() {
+        return coords;
+    }
+
+    public void setCoords(Vector2 coords) {
+        this.coords = coords;
+    }
+
+    public void setCoords(float x, float y) {
+        this.coords = new Vector2(x,y);
+    }
 
 
 }
