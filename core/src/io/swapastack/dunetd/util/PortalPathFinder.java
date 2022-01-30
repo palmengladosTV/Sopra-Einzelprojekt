@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+@Deprecated
 public class PortalPathFinder {
 
     private static LinkedList<Vector2> path = new LinkedList<Vector2>();
@@ -34,8 +35,6 @@ public class PortalPathFinder {
         scimThroughPath(startPos,endPos, new LinkedList<Vector2>(), gameField.clone());
         path.add(endPos);
 
-        path.forEach(ll -> System.out.print("(" + ll.x + "," + ll.y + "), "));
-        System.out.println();
         return path;
 
     }
@@ -61,4 +60,5 @@ public class PortalPathFinder {
         scimThroughPath(new Vector2(startPos.x, startPos.y - 1),endPos, (LinkedList<Vector2>) visited.clone(), newAdjacencyMatrix);
 
     }
+
 }

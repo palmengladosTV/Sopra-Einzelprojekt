@@ -19,9 +19,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.UI.GameUI;
 import io.swapastack.dunetd.UI.TowerPickerWidget;
-import io.swapastack.dunetd.util.Enemy;
-import io.swapastack.dunetd.util.Infantry;
-import io.swapastack.dunetd.util.PortalPathFinder;
+import io.swapastack.dunetd.util.*;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
 import net.mgsx.gltf.scene3d.lights.DirectionalLightEx;
@@ -43,6 +41,8 @@ public class GameScreen implements Screen {
     private final DuneTD parent;
 
     public static int waveNumber;
+
+    private static Vector2 startPos, endPos;
 
     public static int[][] gameField;
     public static boolean startPortalPlaced = false;
@@ -307,7 +307,7 @@ public class GameScreen implements Screen {
                 // TODO: refactor this if needed, e.g. if ground tiles are not all the same size
                 groundTileDimensions.set(modelDimensions);
                 // Set the ModelInstance to the respective row and cell of the map
-                gridTile.modelInstance.transform.setToTranslation(k * modelDimensions.x, 0.0f, i * modelDimensions.z);
+                gridTile.modelInstance.transform.setToTranslation(i * modelDimensions.x, 0.0f,k * modelDimensions.z);
                 // Add the Scene object to the SceneManager for rendering
                 sceneManager.addScene(gridTile);
                 // it could be useful to store the Scene object reference outside this method
@@ -319,6 +319,7 @@ public class GameScreen implements Screen {
 
     public static void addNewTower(Vector2 coords, int towerIndex){
         gameField[(int) coords.x][(int) coords.y] = towerIndex;
+        float internalX = coords.x;
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
         switch(towerIndex){
             case 1:
@@ -350,6 +351,7 @@ public class GameScreen implements Screen {
                 break;
             case 6:
                 startPortalPlaced = true;
+                startPos = new Vector2(internalX,coords.y);
                 Scene startPortal = new Scene(sceneAssetHashMap.get("timpalm/start_portal.glb").scene);
                 startPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 startPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
@@ -358,6 +360,7 @@ public class GameScreen implements Screen {
                 break;
             case 7:
                 endPortalPlaced = true;
+                endPos = new Vector2(internalX,coords.y);
                 Scene endPortal = new Scene(sceneAssetHashMap.get("timpalm/end_portal.glb").scene);
                 endPortal.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y+0.25f, coords.y);
                 endPortal.modelInstance.transform.scale(0.25f, 0.25f, 0.25f);
@@ -390,7 +393,16 @@ public class GameScreen implements Screen {
     }
 
     public static void createPath(){
-        path = PortalPathFinder.findShortestPath(Arrays.stream(gameField).map(int[]::clone).toArray(int[][]::new));
+        //path = PortalPathFinder.findShortestPath(Arrays.stream(gameField).map(int[]::clone).toArray(int[][]::new));
+        Graph g = new Graph(gameField);
+        path = new LinkedList<>();
+
+        for (Node n : Dijkstra.getPath(g,g.getNode(startPos),g.getNode(endPos)))
+            path.add(n.getCoords());
+
+        path.forEach(ll -> System.out.print("(" + ll.x + "," + ll.y + "), "));
+        System.out.println();
+
         if(path.size() <= 1){
             VisDialog ii = new VisDialog("Path error");
             VisLabel il = new VisLabel("Couldn't find a path from the start portal\n" +
