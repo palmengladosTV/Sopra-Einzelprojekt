@@ -1,18 +1,12 @@
 package io.swapastack.dunetd.UI;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.*;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
-import io.swapastack.dunetd.util.PortalPathFinder;
-
-import java.util.LinkedList;
-import java.util.Vector;
 
 public class TowerPickerWidget extends Actor {
     private final DuneTD parent;

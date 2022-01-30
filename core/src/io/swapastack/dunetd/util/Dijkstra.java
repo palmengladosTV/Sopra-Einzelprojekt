@@ -31,9 +31,7 @@ public class Dijkstra {
                     dist.replace(v,alt);
                     prev.replace(v,u);
                 }
-
             }
-
         }
 
         LinkedList<Node> path = new LinkedList<>();
@@ -44,9 +42,7 @@ public class Dijkstra {
                 u = prev.get(u);
             }
         }
-
         return path;
-
     }
 
     private static Node findMin(HashMap<Node,Integer> map, HashSet<Node> nodes){
@@ -59,8 +55,6 @@ public class Dijkstra {
                 returnNode = entry.getKey();
             }
         }
-
         return returnNode;
-
     }
 }

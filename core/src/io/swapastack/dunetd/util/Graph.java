@@ -13,6 +13,7 @@ public class Graph {
         byte dimY = (byte) gameField[0].length;
 
         Node[][] n = new Node[dimX][dimY];
+
         for(int i = 0; i < dimX; i++){
             for (int j = 0; j < dimY; j++) {
                 if (gameField[i][j] == 0 || gameField[i][j] == 6 || gameField[i][j] == 7){
@@ -20,6 +21,7 @@ public class Graph {
                 }
             }
         }
+
         for(int i = 0; i < dimX; i++){
             for (int j = 0; j < dimY; j++) {
                 if (n[i][j] != null){
@@ -60,6 +62,4 @@ public class Graph {
         }
         return null;
     }
-
-
 }
