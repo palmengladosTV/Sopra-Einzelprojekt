@@ -47,6 +47,8 @@ public class GameScreen implements Screen {
 
     public static int waveNumber;
 
+    private static final byte FRAMEINTERVALL = 20;
+
     private static Vector2 startPos, endPos;
 
     public static int[][] gameField;
@@ -58,7 +60,7 @@ public class GameScreen implements Screen {
 
     private static LinkedList<Vector2> path;
 
-    private static ArrayList<Enemy> currentWaveEnemyPile;
+    private static LinkedList<Enemy> currentWaveEnemyPile;
     private static ArrayList<Enemy> currentWaveEnemiesSpawned;
 
     // GDX GLTF
@@ -460,7 +462,7 @@ public class GameScreen implements Screen {
 
     @SuppressWarnings("unchecked")
     public static void createEnemies(){
-        currentWaveEnemyPile = new ArrayList<Enemy>();
+        currentWaveEnemyPile = new LinkedList<>();
         for(int i = 0; i < 10; i++){
             Enemy current;
             current = new Infantry(100, 5, path.get(0), (LinkedList<Vector2>) path.clone());
@@ -474,9 +476,9 @@ public class GameScreen implements Screen {
         allowEnemySpawn = true;
     }
 
-    public static void moveEnemies(){
+    private static void moveEnemies(){
         frameInterval++;
-        if(frameInterval % 20 != 0){
+        if(frameInterval % FRAMEINTERVALL != 0){
             return;
         }
         frameInterval = 0;
@@ -500,27 +502,30 @@ public class GameScreen implements Screen {
                 continue;
             }
 
-            byte seconadaryVelocity = 100;
-            float totalVelocity = (float) currentEnemy.getVelocity()/seconadaryVelocity;
-            //System.out.println("Enemy Number: " + i + " Dest. Size: " + currentEnemy.destination.size() + " X:" + currentX + " Z: " + currentY);
+            byte secondaryVelocity = 100;
+            float totalVelocity = (float) currentEnemy.getVelocity()/secondaryVelocity;
+            //System.out.println("Enemy Number: " + i + " X:" + currentX + " Z: " + currentY);
 
             if(currentX < currentEnemy.destination.getFirst().x){
                 currentEnemy.setCoords(currentX + totalVelocity, currentY);
                 currentEnemy.moveModel(totalVelocity, 0f);
+                currentEnemy.rotateModel(90);
             }
             if(currentX > currentEnemy.destination.getFirst().x){
                 currentEnemy.setCoords(currentX - totalVelocity, currentY);
                 currentEnemy.moveModel(-totalVelocity, 0f);
+                currentEnemy.rotateModel(270);
             }
             if(currentY < currentEnemy.destination.getFirst().y){
                 currentEnemy.setCoords(currentX, currentY + totalVelocity);
                 currentEnemy.moveModel(0f, totalVelocity);
+                currentEnemy.rotateModel(180);
             }
             if(currentY > currentEnemy.destination.getFirst().y){
                 currentEnemy.setCoords(currentX, currentY - totalVelocity);
                 currentEnemy.moveModel(0f, -totalVelocity);
+                currentEnemy.rotateModel(0);
             }
-
             sceneManager.addScene(currentEnemy.getModel());
         }
 
@@ -529,14 +534,25 @@ public class GameScreen implements Screen {
         } catch (NullPointerException ignored) { }
 
         short spawnIntervall = 10;
-        if(frames % spawnIntervall == 0 && frames / spawnIntervall < currentWaveEnemyPile.size()){
-            Enemy currentEnemy = currentWaveEnemyPile.get((int) frames/spawnIntervall);
-            currentWaveEnemyPile.remove(currentEnemy);
+        if(frames % spawnIntervall == 0 && 0 < currentWaveEnemyPile.size()){
+            Enemy currentEnemy = currentWaveEnemyPile.poll();
             currentWaveEnemiesSpawned.add(currentEnemy);
             sceneManager.addScene(currentEnemy.getModel());
         }
 
     }
+
+    private void towerShoot(){
+        if(frameInterval % FRAMEINTERVALL != FRAMEINTERVALL/2){
+            return;
+        }
+
+
+
+
+
+    }
+
 
     /**
      * This function acts as a starting point.

@@ -14,12 +14,14 @@ public abstract class Enemy{
     public LinkedList<Vector2> destination;
     Vector2 coords;
     Scene model;
+    int rotation;
 
     public Enemy(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path){
         this.livePoints = livePoints;
         this.velocity = velocity;
         this.coords = coords;
         this.destination = path;
+        this.rotation = 0;
     }
 
     public int getLivePoints() {
@@ -62,12 +64,15 @@ public abstract class Enemy{
         this.model.modelInstance.transform.translate(x,GameScreen.groundTileDimensions.y,this.coords.y);
     }
 
-    public void moveModel(float x, float z){
-        this.model.modelInstance.transform.trn(x, 0f, z);
+    public void moveModel(float dx, float dz){
+        this.model.modelInstance.transform.trn(dx, 0f, dz);
     }
 
     public void rotateModel(float degrees){
-        this.model.modelInstance.transform.rotate(0f,1f,0f,degrees);
+        if(this.rotation == degrees)
+            return;
+        this.model.modelInstance.transform.rotate(0f,1f,0f,degrees-this.rotation);
+        this.rotation += (degrees-this.rotation) % 360;
     }
 
     public Vector2 getCoords() {
