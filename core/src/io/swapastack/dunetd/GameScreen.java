@@ -4,14 +4,12 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g3d.RenderableProvider;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Null;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -32,8 +30,6 @@ import net.mgsx.gltf.scene3d.scene.SceneSkybox;
 import net.mgsx.gltf.scene3d.utils.IBLBuilder;
 import org.decimal4j.util.DoubleRounder;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -62,6 +58,8 @@ public class GameScreen implements Screen {
 
     private static LinkedList<Enemy> currentWaveEnemyPile;
     private static ArrayList<Enemy> currentWaveEnemiesSpawned;
+
+    private static HashSet<Tower> currentPlacedTowers;
 
     // GDX GLTF
     private static SceneManager sceneManager;
@@ -267,8 +265,11 @@ public class GameScreen implements Screen {
         //Draw UI
         gameUI.render();
 
-        if(allowEnemySpawn)
+        if(allowEnemySpawn){
             moveEnemies();
+            towerShoot();
+        }
+
     }
 
     @Override
@@ -295,6 +296,7 @@ public class GameScreen implements Screen {
 
     private void createMap(SceneManager sceneManager){
         gameField = new int[rows][cols];
+        currentPlacedTowers = new HashSet<>();
         groundTileDimensions = createGround();
     }
 
@@ -333,19 +335,19 @@ public class GameScreen implements Screen {
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
         switch(towerIndex){
             case 1:
-                Scene sonicTower = new Scene(sceneAssetHashMap.get("towerRound_crystals.glb").scene);
-                sonicTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
-                sceneManager.addScene(sonicTower);
+                SonicTower sonicTower = new SonicTower(coords, 3);
+                currentPlacedTowers.add(sonicTower);
+                sceneManager.addScene(sonicTower.getModel());
                 break;
             case 2:
-                Scene canonTower = new Scene(sceneAssetHashMap.get("weapon_cannon.glb").scene);
-                canonTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
-                sceneManager.addScene(canonTower);
+                Cannon cannon = new Cannon(coords, 5);
+                currentPlacedTowers.add(cannon);
+                sceneManager.addScene(cannon.getModel());
                 break;
             case 3:
-                Scene bombTower = new Scene(sceneAssetHashMap.get("weapon_blaster.glb").scene);
-                bombTower.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
-                sceneManager.addScene(bombTower);
+                BombTower bombTower = new BombTower(coords, 15);
+                currentPlacedTowers.add(bombTower);
+                sceneManager.addScene(bombTower.getModel());
                 break;
             case 4:
                 Scene wall = new Scene(sceneAssetHashMap.get("towerRound_roofB.glb").scene);
@@ -390,6 +392,15 @@ public class GameScreen implements Screen {
 
         gameField[(int) coords.x][(int) coords.y] = 0;
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
+
+        for(Tower t : currentPlacedTowers){
+            if(t.getCoords().equals(coords)){
+                currentPlacedTowers.remove(t);
+                System.out.println(t.getClass());
+                sceneManager.removeScene(t.getModel());
+                return;
+            }
+        }
 
         sceneManager.getRenderableProviders().forEach(s -> { //Remove object from 3D scene
             Scene current = (Scene) s;                         //Es wird eine 4x4 Matrix zur Beschreibung
@@ -486,15 +497,22 @@ public class GameScreen implements Screen {
 
         Enemy removedEnemy = null;
 
-        for (Enemy currentEnemy : currentWaveEnemiesSpawned){
-        //for (int i = 0; i < currentWaveEnemiesSpawned.size(); i++){
-            //Enemy currentEnemy = currentWaveEnemiesSpawned.get(i);
+        //for (Enemy currentEnemy : currentWaveEnemiesSpawned){
+        for (int i = 0; i < currentWaveEnemiesSpawned.size(); i++){
+            Enemy currentEnemy = currentWaveEnemiesSpawned.get(i);
             sceneManager.removeScene(currentEnemy.getModel());
             float currentX = (float) DoubleRounder.round(currentEnemy.getCoords().x, 4);
             float currentY = (float) DoubleRounder.round(currentEnemy.getCoords().y, 4);
 
-            if(new Vector2(currentX,currentY).equals(currentEnemy.destination.getFirst()))
+            float goalX = currentEnemy.destination.getFirst().x;
+            float goalY = currentEnemy.destination.getFirst().y;
+
+            if(currentX < goalX + 0.05f && currentX > goalX - 0.05f && currentY < goalY + 0.05f && currentY > goalY - 0.05f){
+                currentX = goalX;
+                currentY = goalY;
                 currentEnemy.destination.removeFirst();
+            }
+
 
             if(currentEnemy.destination.isEmpty()){
                 //TODO: Enemy ist am End-Portal angelangt
@@ -504,27 +522,28 @@ public class GameScreen implements Screen {
 
             byte secondaryVelocity = 100;
             float totalVelocity = (float) currentEnemy.getVelocity()/secondaryVelocity;
-            //System.out.println("Enemy Number: " + i + " X:" + currentX + " Z: " + currentY);
+            System.out.println("Enemy Number: " + i + " X:" + currentX + " Z: " + currentY +
+                    " Damage: " + currentEnemy.getLivePoints() + " Velocity: " + currentEnemy.getVelocity());
 
             if(currentX < currentEnemy.destination.getFirst().x){
                 currentEnemy.setCoords(currentX + totalVelocity, currentY);
                 currentEnemy.moveModel(totalVelocity, 0f);
-                currentEnemy.rotateModel(90);
+                currentEnemy.rotateModel(270);
             }
             if(currentX > currentEnemy.destination.getFirst().x){
                 currentEnemy.setCoords(currentX - totalVelocity, currentY);
                 currentEnemy.moveModel(-totalVelocity, 0f);
-                currentEnemy.rotateModel(270);
+                currentEnemy.rotateModel(90);
             }
             if(currentY < currentEnemy.destination.getFirst().y){
                 currentEnemy.setCoords(currentX, currentY + totalVelocity);
                 currentEnemy.moveModel(0f, totalVelocity);
-                currentEnemy.rotateModel(180);
+                currentEnemy.rotateModel(0);
             }
             if(currentY > currentEnemy.destination.getFirst().y){
                 currentEnemy.setCoords(currentX, currentY - totalVelocity);
                 currentEnemy.moveModel(0f, -totalVelocity);
-                currentEnemy.rotateModel(0);
+                currentEnemy.rotateModel(180);
             }
             sceneManager.addScene(currentEnemy.getModel());
         }
@@ -546,11 +565,42 @@ public class GameScreen implements Screen {
         if(frameInterval % FRAMEINTERVALL != FRAMEINTERVALL/2){
             return;
         }
+        for(Tower t : currentPlacedTowers){
+            if(t instanceof Cannon){ //Einzelziel
+                for(Enemy e : currentWaveEnemiesSpawned){
+                    Enemy damagedEnemy = t.findEnemyInRange(e);
+                    if(damagedEnemy == null)
+                        continue;
 
-
-
-
-
+                    t.hitEnemy(damagedEnemy);
+                    if(damagedEnemy.getLivePoints() <= 0){
+                        currentWaveEnemiesSpawned.remove(damagedEnemy);
+                        sceneManager.removeScene(damagedEnemy.getModel());
+                        ((Cannon) t).setFocus(false);
+                        break;
+                    }
+                }
+            }
+            else{ //Flächenziel
+                HashSet<Enemy> enemies = new HashSet<>();
+                for(Enemy e : currentWaveEnemiesSpawned){
+                    e.setVelocity(e.maxSpeed);
+                    Enemy currentEnemy = t.findEnemyInRange(e);
+                    if (currentEnemy == null)
+                        continue;
+                    enemies.add(currentEnemy);
+                }
+                if(enemies.size() == 0)
+                    continue;
+                for(Enemy damagedEnemy : enemies){
+                    t.hitEnemy(damagedEnemy);
+                    if(damagedEnemy.getLivePoints() <= 0){
+                        currentWaveEnemiesSpawned.remove(damagedEnemy);
+                        sceneManager.removeScene(damagedEnemy.getModel());
+                    }
+                }
+            }
+        }
     }
 
 
@@ -580,7 +630,8 @@ public class GameScreen implements Screen {
 
         // place boss character
         Scene bossCharacter = new Scene(sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
-        bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f).scale(0.005f, 0.005f, 0.005f);
+        bossCharacter.modelInstance.transform.setToTranslation(0.0f, groundTileDimensions.y, 2.0f)
+                .scale(0.005f, 0.005f, 0.005f);
         sceneManager.addScene(bossCharacter);
 
         bossCharacterAnimationController = new AnimationController(bossCharacter.modelInstance);

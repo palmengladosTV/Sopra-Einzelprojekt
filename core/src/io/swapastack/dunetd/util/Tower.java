@@ -8,6 +8,7 @@ public abstract class Tower {
     Scene model;
     int rotation;
 
+
     public Tower(Vector2 coords){
         this.coords = coords;
         this.rotation = 0;
@@ -32,5 +33,39 @@ public abstract class Tower {
         return coords;
     }
 
+    public Enemy findEnemyInRange(Enemy e){
+
+        if(this.getCoords().x == Math.round(e.getCoords().x - 1) && this.getCoords().y == Math.round(e.getCoords().y - 1)){ //NW
+            this.rotateModel(225);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x - 1) && this.getCoords().y == Math.round(e.getCoords().y)){ //W
+            this.rotateModel(270);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x - 1) && this.getCoords().y == Math.round(e.getCoords().y + 1)){ //SW
+            this.rotateModel(315);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x) && this.getCoords().y == Math.round(e.getCoords().y + 1)){ //S
+            this.rotateModel(0);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x + 1) && this.getCoords().y == Math.round(e.getCoords().y + 1)){ //SO
+            this.rotateModel(45);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x + 1) && this.getCoords().y == Math.round(e.getCoords().y)){ //O
+            this.rotateModel(90);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x + 1) && this.getCoords().y == Math.round(e.getCoords().y - 1)){ //NO
+            this.rotateModel(135);
+        }
+        else if(this.getCoords().x == Math.round(e.getCoords().x) && this.getCoords().y == Math.round(e.getCoords().y - 1)){ //N
+            this.rotateModel(180);
+        }
+        else
+            return null;
+        return e;
+    }
+
+    public void hitEnemy(Enemy e){
+
+    };
 
 }

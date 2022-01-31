@@ -4,21 +4,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
-import org.graalvm.compiler.lir.amd64.vector.AMD64VectorMove;
 
 import java.util.LinkedList;
 
 public abstract class Enemy{
     int livePoints;
-    int velocity;
+    float velocity;
+    public final float maxSpeed;
     public LinkedList<Vector2> destination;
     Vector2 coords;
     Scene model;
     int rotation;
 
-    public Enemy(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path){
+    public Enemy(int livePoints, float velocity, Vector2 coords, LinkedList<Vector2> path){
         this.livePoints = livePoints;
         this.velocity = velocity;
+        this.maxSpeed = velocity;
         this.coords = coords;
         this.destination = path;
         this.rotation = 0;
@@ -36,11 +37,11 @@ public abstract class Enemy{
         this.livePoints = this.livePoints + value;
     }
 
-    public int getVelocity() {
+    public float getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(int velocity) {
+    public void setVelocity(float velocity) {
         this.velocity = velocity;
     }
 
@@ -52,16 +53,8 @@ public abstract class Enemy{
         this.model = model;
     }
 
-    @Deprecated
-    public void setModelToPosition(Vector3 coords){
-        coords.x = GameScreen.gameField.length - 1 - coords.x;
-        this.model.modelInstance.transform.translate(coords);
-    }
-
     public void setModelToPosition(){
-        //float x = GameScreen.gameField.length - 1 - this.coords.x;
-        float x = this.coords.x;
-        this.model.modelInstance.transform.translate(x,GameScreen.groundTileDimensions.y,this.coords.y);
+        this.model.modelInstance.transform.trn(this.coords.x,GameScreen.groundTileDimensions.y,this.coords.y);
     }
 
     public void moveModel(float dx, float dz){
@@ -86,6 +79,5 @@ public abstract class Enemy{
     public void setCoords(float x, float y) {
         this.coords = new Vector2(x,y);
     }
-
 
 }
