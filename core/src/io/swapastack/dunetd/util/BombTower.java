@@ -17,6 +17,7 @@ public class BombTower extends Tower{
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("weapon_blaster.glb").scene);
         model.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
         this.power = damage;
+        super.spice = 1000;
     }
 
     @Override

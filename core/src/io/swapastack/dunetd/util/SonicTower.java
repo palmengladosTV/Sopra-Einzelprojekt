@@ -15,6 +15,7 @@ public class SonicTower extends Tower{
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("towerRound_crystals.glb").scene);
         model.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
         this.power = power;
+        super.spice = 3000;
     }
 
     @Override

@@ -11,6 +11,7 @@ public class SpaceShip extends Enemy{
         super(livePoints, velocity, coords, path);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("spaceship_orion/scene.gltf").scene);
         model.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
+        super.money = 300;
     }
 
 }

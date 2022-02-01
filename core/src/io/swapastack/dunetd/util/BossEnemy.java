@@ -11,6 +11,7 @@ public class BossEnemy extends Enemy{
         super(livePoints, velocity, coords, path);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("faceted_character/scene.gltf").scene);
         model.modelInstance.transform.scale(0.005f, 0.005f, 0.005f);
+        super.money = 1500;
     }
 
 }

@@ -1,7 +1,6 @@
 package io.swapastack.dunetd.util;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
 
@@ -15,6 +14,7 @@ public abstract class Enemy{
     Vector2 coords;
     Scene model;
     int rotation;
+    int money;
 
     public Enemy(int livePoints, float velocity, Vector2 coords, LinkedList<Vector2> path){
         this.livePoints = livePoints;
@@ -78,6 +78,10 @@ public abstract class Enemy{
 
     public void setCoords(float x, float y) {
         this.coords = new Vector2(x,y);
+    }
+
+    public int getMoney(){
+        return this.money;
     }
 
 }

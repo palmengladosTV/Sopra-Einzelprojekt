@@ -2,6 +2,7 @@ package io.swapastack.dunetd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
+import com.badlogic.gdx.backends.lwjgl3.audio.Wav;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Null;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -19,6 +21,7 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import io.swapastack.dunetd.UI.GameUI;
 import io.swapastack.dunetd.UI.TowerPickerWidget;
+import io.swapastack.dunetd.UI.WaveOverviewWidget;
 import io.swapastack.dunetd.util.*;
 import net.mgsx.gltf.scene3d.attributes.PBRCubemapAttribute;
 import net.mgsx.gltf.scene3d.attributes.PBRTextureAttribute;
@@ -41,7 +44,9 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
 
-    public static int waveNumber;
+    public static int waveNumber = 0;
+    public static int money = 500;
+    public static int lives = 50;
 
     private static final byte FRAMEINTERVALL = 20;
 
@@ -109,6 +114,8 @@ public class GameScreen implements Screen {
         rows = fieldX;
         cols = fieldY;
         frameInterval = 0;
+
+        waveNumber = 0;
         initGameUI();
     }
 
@@ -330,22 +337,30 @@ public class GameScreen implements Screen {
     }
 
     public static void addNewTower(Vector2 coords, int towerIndex){
-        gameField[(int) coords.x][(int) coords.y] = towerIndex;
         float internalX = coords.x;
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
         switch(towerIndex){
             case 1:
-                SonicTower sonicTower = new SonicTower(coords, 3);
+                SonicTower sonicTower = new SonicTower(coords, 4);
+                if(sonicTower.getMoney()>money)
+                    return;
+                WaveOverviewWidget.changeMoney(-sonicTower.getMoney());
                 currentPlacedTowers.add(sonicTower);
                 sceneManager.addScene(sonicTower.getModel());
                 break;
             case 2:
                 Cannon cannon = new Cannon(coords, 5);
+                if(cannon.getMoney()>money)
+                    return;
+                WaveOverviewWidget.changeMoney(-cannon.getMoney());
                 currentPlacedTowers.add(cannon);
                 sceneManager.addScene(cannon.getModel());
                 break;
             case 3:
-                BombTower bombTower = new BombTower(coords, 15);
+                BombTower bombTower = new BombTower(coords, 10);
+                if(bombTower.getMoney()>money)
+                    return;
+                WaveOverviewWidget.changeMoney(-bombTower.getMoney());
                 currentPlacedTowers.add(bombTower);
                 sceneManager.addScene(bombTower.getModel());
                 break;
@@ -381,6 +396,8 @@ public class GameScreen implements Screen {
                 break;
         }
 
+        gameField[(int) internalX][(int) coords.y] = towerIndex;
+
     }
 
     public static void removeTower(Vector2 coords){
@@ -396,6 +413,7 @@ public class GameScreen implements Screen {
         for(Tower t : currentPlacedTowers){
             if(t.getCoords().equals(coords)){
                 currentPlacedTowers.remove(t);
+                WaveOverviewWidget.changeMoney(t.getMoney());
                 System.out.println(t.getClass());
                 sceneManager.removeScene(t.getModel());
                 return;
@@ -474,13 +492,20 @@ public class GameScreen implements Screen {
     @SuppressWarnings("unchecked")
     public static void createEnemies(){
         currentWaveEnemyPile = new LinkedList<>();
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < 10+2*waveNumber; i++){
             Enemy current;
-            current = new Infantry(100, 5, path.get(0), (LinkedList<Vector2>) path.clone());
+            if(i % 5 == 0 && i > 15)
+                current = new SpaceShip(250,3,path.get(0), (LinkedList<Vector2>) path.clone());
+            else if (i % 8  == 0 && i >= 24)
+                current = new BossEnemy(500,2,path.get(0), (LinkedList<Vector2>) path.clone());
+            else
+                current = new Infantry(100, 5, path.get(0), (LinkedList<Vector2>) path.clone());
             //current.setModelToPosition(new Vector3(path.get(0).x,groundTileDimensions.y,path.get(0).y));
             current.setModelToPosition();
             currentWaveEnemyPile.add(current);
         }
+        Collections.shuffle(currentWaveEnemyPile);
+        WaveOverviewWidget.setWaveEnemies(currentWaveEnemyPile.size());
         frameInterval = 0;
         frames = -1;
         currentWaveEnemiesSpawned = new ArrayList<Enemy>();
@@ -494,6 +519,12 @@ public class GameScreen implements Screen {
         }
         frameInterval = 0;
         frames++;
+
+        if(currentWaveEnemiesSpawned.size() == 0 && currentWaveEnemyPile.size() == 0){ //Important: wave finished
+            allowEnemySpawn = false;
+            WaveOverviewWidget.changeWaveNo();
+            TowerPickerWidget.allowBuild();
+        }
 
         Enemy removedEnemy = null;
 
@@ -515,15 +546,16 @@ public class GameScreen implements Screen {
 
 
             if(currentEnemy.destination.isEmpty()){
-                //TODO: Enemy ist am End-Portal angelangt
+                //Important: Enemy ist am End-Portal angelangt
+                WaveOverviewWidget.changeLives();
                 removedEnemy = currentEnemy;
                 continue;
             }
 
             byte secondaryVelocity = 100;
             float totalVelocity = (float) currentEnemy.getVelocity()/secondaryVelocity;
-            System.out.println("Enemy Number: " + i + " X:" + currentX + " Z: " + currentY +
-                    " Damage: " + currentEnemy.getLivePoints() + " Velocity: " + currentEnemy.getVelocity());
+            //System.out.println("Enemy Number: " + i + " X:" + currentX + " Z: " + currentY +
+            //        " Damage: " + currentEnemy.getLivePoints() + " Velocity: " + currentEnemy.getVelocity());
 
             if(currentX < currentEnemy.destination.getFirst().x){
                 currentEnemy.setCoords(currentX + totalVelocity, currentY);
@@ -552,6 +584,12 @@ public class GameScreen implements Screen {
             currentWaveEnemiesSpawned.remove(removedEnemy);
         } catch (NullPointerException ignored) { }
 
+        if(lives == 0){
+            allowEnemySpawn = false;
+            lostGame();
+            return;
+        }
+
         short spawnIntervall = 10;
         if(frames % spawnIntervall == 0 && 0 < currentWaveEnemyPile.size()){
             Enemy currentEnemy = currentWaveEnemyPile.poll();
@@ -576,7 +614,17 @@ public class GameScreen implements Screen {
                     if(damagedEnemy.getLivePoints() <= 0){
                         currentWaveEnemiesSpawned.remove(damagedEnemy);
                         sceneManager.removeScene(damagedEnemy.getModel());
+                        WaveOverviewWidget.addWaveEnemies();
+                        WaveOverviewWidget.changeMoney(damagedEnemy.getMoney());
                         ((Cannon) t).setFocus(false);
+                        for(Tower tt : currentPlacedTowers){
+                            if(!(tt instanceof Cannon))
+                               continue;
+                            try{
+                                if(((Cannon) tt).focused.equals(damagedEnemy))
+                                    ((Cannon) tt).setFocus(false);
+                            }catch(NullPointerException ignored) { }
+                        }
                         break;
                     }
                 }
@@ -597,12 +645,22 @@ public class GameScreen implements Screen {
                     if(damagedEnemy.getLivePoints() <= 0){
                         currentWaveEnemiesSpawned.remove(damagedEnemy);
                         sceneManager.removeScene(damagedEnemy.getModel());
+                        WaveOverviewWidget.addWaveEnemies();
+                        WaveOverviewWidget.changeMoney(damagedEnemy.getMoney());
                     }
                 }
             }
         }
     }
 
+    public static void lostGame(){
+        VisDialog ii = new VisDialog("Verloren LOL");
+        VisLabel il = new VisLabel("You lost. To play again restart this application");
+        il.setAlignment(Align.center);
+        ii.text(il);
+        ii.button("OK");
+        GameUI.showDialog(ii);
+    }
 
     /**
      * This function acts as a starting point.

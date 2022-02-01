@@ -12,7 +12,7 @@ public class TowerPickerWidget extends Actor {
     private final DuneTD parent;
     private Stage stage;
     private InputMultiplexer inputMultiplexer;
-    private VisWindow window;
+    private static VisWindow window;
     private VisList<String> list;
     private VisTextButton btnDestructionMode;
     public static VisTextButton b;
@@ -99,6 +99,11 @@ public class TowerPickerWidget extends Actor {
         });
 
         inputMultiplexer.addProcessor(stage);
+    }
+
+    public static void allowBuild(){
+        window.getTitleLabel().setText("Place towers:");
+        window.setTouchable(Touchable.enabled);
     }
 
     @Override

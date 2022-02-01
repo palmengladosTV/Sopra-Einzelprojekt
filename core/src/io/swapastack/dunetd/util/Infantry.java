@@ -11,6 +11,7 @@ public class Infantry extends Enemy{
         super(livePoints, velocity, coords, path);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("cute_cyborg/scene.gltf").scene);
         model.modelInstance.transform.scale(0.02f, 0.04f, 0.03f);
+        super.money = 100;
     }
 
 }

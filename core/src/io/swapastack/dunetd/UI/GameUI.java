@@ -11,6 +11,7 @@ public class GameUI {
     private final DuneTD parent;
     public static Stage stage;
     public TowerPickerWidget tpw;
+    public WaveOverviewWidget wow;
     public InputMultiplexer inputMultiplexerUI;
 
     public GameUI(DuneTD parent){
@@ -24,11 +25,15 @@ public class GameUI {
 
     private void setWidgets() {
         tpw = new TowerPickerWidget(parent, stage, inputMultiplexerUI);
+        wow = new WaveOverviewWidget(parent,stage);
     }
 
     private void configureWidgets() {
         tpw.setSize(150,280);
         tpw.setPosition(40, 180);
+
+        wow.setSize(200,120);
+        wow.setPosition(1150,650);
     }
 
     public static void showDialog(VisDialog d){

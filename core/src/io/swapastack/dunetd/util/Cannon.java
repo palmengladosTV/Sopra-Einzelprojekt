@@ -9,7 +9,7 @@ import static io.swapastack.dunetd.GameScreen.groundTileDimensions;
 public class Cannon extends Tower{
 
     int power;
-    Enemy focused;
+    public Enemy focused;
     boolean hasFocus;
 
     public Cannon(Vector2 coords, int damage) {
@@ -18,6 +18,7 @@ public class Cannon extends Tower{
         model.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
         this.power = damage;
         this.hasFocus = false;
+        super.spice = 250;
     }
 
     @Override

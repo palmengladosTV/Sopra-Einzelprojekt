@@ -7,6 +7,7 @@ public abstract class Tower {
     Vector2 coords;
     Scene model;
     int rotation;
+    int spice;
 
 
     public Tower(Vector2 coords){
@@ -62,6 +63,10 @@ public abstract class Tower {
         else
             return null;
         return e;
+    }
+
+    public int getMoney(){
+        return this.spice;
     }
 
     public void hitEnemy(Enemy e){
