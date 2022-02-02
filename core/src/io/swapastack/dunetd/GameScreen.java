@@ -55,9 +55,13 @@ public class GameScreen implements Screen {
     public static int[][] gameField;
     public static boolean startPortalPlaced = false;
     public static boolean endPortalPlaced = false;
-    private static boolean allowEnemySpawn = false;
+    public static boolean allowEnemySpawn = false;
     private static byte frameInterval;
     private static long frames;
+
+    public static boolean klopfer1Placed = false;
+
+    public static Scene klopfer1;
 
     private static LinkedList<Vector2> path;
 
@@ -365,16 +369,25 @@ public class GameScreen implements Screen {
                 sceneManager.addScene(bombTower.getModel());
                 break;
             case 4:
-                Scene wall = new Scene(sceneAssetHashMap.get("towerRound_roofB.glb").scene);
-                wall.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
-                sceneManager.addScene(wall);
+                Wall wall = new Wall(coords);
+                if(wall.getMoney()>money)
+                    return;
+                WaveOverviewWidget.changeMoney(-wall.getMoney());
+                currentPlacedTowers.add(wall);
+                sceneManager.addScene(wall.getModel());
                 break;
             case 5:
                 Scene klopfer = new Scene(sceneAssetHashMap.get("timpalm/klopfer.glb").scene);
                 klopfer.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 klopfer.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
                 klopfer.modelInstance.transform.rotate(new Vector3(0f,1f,0f),30f);
-                sceneManager.addScene(klopfer);
+                if(klopfer1Placed){
+                    sandworm(klopfer);
+                    return;
+                }
+                klopfer1 = klopfer;
+                klopfer1Placed = true;
+                sceneManager.addScene(klopfer1);
                 break;
             case 6:
                 startPortalPlaced = true;
@@ -522,6 +535,8 @@ public class GameScreen implements Screen {
 
         if(currentWaveEnemiesSpawned.size() == 0 && currentWaveEnemyPile.size() == 0){ //Important: wave finished
             allowEnemySpawn = false;
+            klopfer1Placed = false;
+            removeKlopfers();
             WaveOverviewWidget.changeWaveNo();
             TowerPickerWidget.allowBuild();
         }
@@ -604,6 +619,8 @@ public class GameScreen implements Screen {
             return;
         }
         for(Tower t : currentPlacedTowers){
+            if(t instanceof Wall)
+                continue;
             if(t instanceof Cannon){ //Einzelziel
                 for(Enemy e : currentWaveEnemiesSpawned){
                     Enemy damagedEnemy = t.findEnemyInRange(e);
@@ -653,13 +670,70 @@ public class GameScreen implements Screen {
         }
     }
 
-    public static void lostGame(){
+    private static void lostGame(){
         VisDialog ii = new VisDialog("Verloren LOL");
         VisLabel il = new VisLabel("You lost. To play again restart this application");
         il.setAlignment(Align.center);
         ii.text(il);
         ii.button("OK");
         GameUI.showDialog(ii);
+    }
+
+    private static void sandworm(Scene klopfer2){
+        if(klopfer2.modelInstance.transform.val[12] == klopfer1.modelInstance.transform.val[12]){
+            int axis = gameField.length - 1 - (int) klopfer2.modelInstance.transform.val[12];
+            klopfer1Placed = false;
+            HashSet<Enemy> removedEnemies = new HashSet<>();
+            HashSet<Tower> removedTowers = new HashSet<>();
+            for (Enemy e : currentWaveEnemiesSpawned){
+                if(Math.round(e.getCoords().x) == axis){
+                    removedEnemies.add(e);
+                    sceneManager.removeScene(e.getModel());
+                    WaveOverviewWidget.addWaveEnemies();
+                    WaveOverviewWidget.changeMoney(e.getMoney());
+                }
+            }
+            for (Tower t : currentPlacedTowers){
+                if(Math.round(t.getCoords().x) == axis){
+                    removedTowers.add(t);
+                    WaveOverviewWidget.changeMoney(-t.getMoney());
+                }
+            }
+            removedEnemies.forEach(e -> currentWaveEnemiesSpawned.remove(e));
+            removedTowers.forEach(t -> removeTower(t.getCoords()));
+        }else if(klopfer2.modelInstance.transform.val[14] == klopfer1.modelInstance.transform.val[14]){
+            int axis = (int) klopfer2.modelInstance.transform.val[14];
+            klopfer1Placed = false;
+            HashSet<Enemy> removedEnemies = new HashSet<>();
+            HashSet<Tower> removedTowers = new HashSet<>();
+            for (Enemy e : currentWaveEnemiesSpawned){
+                if(Math.round(e.getCoords().y) == axis){
+                    removedEnemies.add(e);
+                    sceneManager.removeScene(e.getModel());
+                    WaveOverviewWidget.addWaveEnemies();
+                    WaveOverviewWidget.changeMoney(e.getMoney());
+                }
+            }
+            for (Tower t : currentPlacedTowers){
+                if(Math.round(t.getCoords().y) == axis){
+                    removedTowers.add(t);
+                    WaveOverviewWidget.changeMoney(-t.getMoney());
+                }
+            }
+            removedEnemies.forEach(e -> currentWaveEnemiesSpawned.remove(e));
+            removedTowers.forEach(t -> removeTower(t.getCoords()));
+        }
+        removeKlopfers();
+    }
+
+    private static void removeKlopfers(){
+        for(int i = 0; i < gameField.length; i++){
+            for(int j = 0; j < gameField[0].length; j++){
+                if(gameField[i][j] == 5){
+                    removeTower(new Vector2(i,j));
+                }
+            }
+        }
     }
 
     /**

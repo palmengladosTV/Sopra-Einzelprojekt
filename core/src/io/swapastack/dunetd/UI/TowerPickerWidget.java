@@ -14,7 +14,7 @@ public class TowerPickerWidget extends Actor {
     private InputMultiplexer inputMultiplexer;
     private static VisWindow window;
     private VisList<String> list;
-    private VisTextButton btnDestructionMode;
+    private static VisTextButton btnDestructionMode;
     public static VisTextButton b;
     protected static boolean gfoWindowActive = false;
     protected static boolean buildMode = true;
@@ -32,11 +32,10 @@ public class TowerPickerWidget extends Actor {
     private void setWidgets() {
         window = new VisWindow("Place Towers");
         list = new VisList<String>();
-        list.setItems("Sonic Tower (5000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (0)", "Klopfer (0)", "Start-Portal (0)", "End-Portal (0)");
+        list.setItems("Sonic Tower (5000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (200)", "Klopfer (0)", "Start-Portal (0)", "End-Portal (0)");
         list.setSelectedIndex(-1);
         b = new VisTextButton("Initialize wave");
         btnDestructionMode = new VisTextButton("Destroy");
-
     }
 
     private void configureWidgets() {
@@ -53,10 +52,11 @@ public class TowerPickerWidget extends Actor {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
                 if(waveReady){
-                    waveReady = false;
-                    b.setText("Initialize wave");
+                    //waveReady = false;
+                    //b.setText("Initialize wave");
                     window.getTitleLabel().setText("Window disabled!");
-                    window.setTouchable(Touchable.disabled);
+                    //window.setTouchable(Touchable.disabled);
+                    btnDestructionMode.setDisabled(true);
                     GameScreen.createEnemies();
                 }
                 else{
@@ -92,6 +92,11 @@ public class TowerPickerWidget extends Actor {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
                 if(!gfoWindowActive){
+                    System.out.println(GameScreen.allowEnemySpawn);
+                    if(GameScreen.allowEnemySpawn == (list.getSelectedIndex() != 4)){  //5 - 1 = 4
+                        list.setSelectedIndex(-1);
+                        return;
+                    }
                     gfoWindowActive = true;
                     GameFieldOverview gfo = new GameFieldOverview(parent,stage,inputMultiplexer,list.getSelectedIndex());
                 }
@@ -104,7 +109,8 @@ public class TowerPickerWidget extends Actor {
 
     public static void allowBuild(){
         window.getTitleLabel().setText("Place towers:");
-        window.setTouchable(Touchable.enabled);
+        //window.setTouchable(Touchable.enabled);
+        btnDestructionMode.setDisabled(true);
     }
 
     @Override
