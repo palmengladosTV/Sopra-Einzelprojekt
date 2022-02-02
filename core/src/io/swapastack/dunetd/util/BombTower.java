@@ -6,12 +6,11 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import static io.swapastack.dunetd.GameScreen.groundTileDimensions;
 
+/** Bomb Tower: Medium costly tower that deals area damage to enemies.**/
 public class BombTower extends Tower{
-
     int power;
     byte cooldown;
     final byte COOLDOWNTIMER = 10;
-
     public BombTower(Vector2 coords, int damage) {
         super(coords);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("weapon_blaster.glb").scene);

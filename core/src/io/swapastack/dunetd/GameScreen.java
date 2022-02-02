@@ -35,8 +35,9 @@ import java.util.*;
 
 /**
  * The GameScreen class.
+ * Main driver class for the game.
  *
- * @author Dennis Jehle
+ * @author Tim Palm, Dennis Jehle
  */
 public class GameScreen implements Screen {
 
@@ -105,12 +106,16 @@ public class GameScreen implements Screen {
     //Game UI
     GameUI gameUI;
 
+    //Not Used:
     public GameScreen(DuneTD parent) {
         this.parent = parent;
         frameInterval = 0;
         initGameUI();
     }
-
+    /** Constructor: Initializes the {@link GameScreen}
+     * @param parent The {@link DuneTD} parent object
+     * @param fieldX The field dimension on the X-axis.
+     * @param fieldY The field dimension on the Z-axis.**/
     public GameScreen(DuneTD parent, byte fieldX, byte fieldY) {
         this.parent = parent;
         rows = fieldX;
@@ -118,16 +123,14 @@ public class GameScreen implements Screen {
         frameInterval = 0;
         initGameUI();
     }
-
+    /** Bomb Tower: Medium costly tower that deals area damage to enemies.**/
     public void initGameUI(){
         gameUI = new GameUI(parent);
     }
-    /**
-     * Called when this screen becomes the current screen for a {@link Game}.
-     */
+
+    /**Called when this screen becomes the current screen for a {@link Game}.**/
     @Override
     public void show() {
-
         // SpaiR/imgui-java
         ImGui.createContext();
         windowHandle = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
@@ -228,10 +231,8 @@ public class GameScreen implements Screen {
 
     }
 
-    /**
-     * Called when the screen should render itself.
-     * @param delta - The time in seconds since the last render.
-     */
+    /**Called when the screen should render itself.
+     * @param delta The time in seconds since the last render.**/
     @Override
     public void render(float delta) {
         // OpenGL - clear color and depth buffer
@@ -242,7 +243,7 @@ public class GameScreen implements Screen {
                 e.getAnimationController().update(delta);
         } catch (NullPointerException ignored) { }
 
-        /*
+        /* Example Character AnimationController
         try { bossCharacterAnimationController.update(delta); }
         catch (NullPointerException ignored) { }
         try { enemyCharacterAnimationController.update(delta); }
@@ -285,6 +286,7 @@ public class GameScreen implements Screen {
 
     }
 
+    //Disabled:
     @Override
     public void resize(int width, int height) {
         // GDX GLTF - update the viewport
@@ -292,27 +294,32 @@ public class GameScreen implements Screen {
         //gameUI.resize(width,height);
     }
 
+    //Not implemented
     @Override
     public void pause() {
         // TODO: implement pause logic if needed
     }
 
+    //Not implemented
     @Override
     public void resume() {
         // TODO: implement resume logic if needed
     }
 
+    //Not implemented
     @Override
     public void hide() {
         // TODO: implement hide logic if needed
     }
 
+    /**Creates an empty map with only the ground tiles.**/
     private void createMap(SceneManager sceneManager){
         gameField = new int[rows][cols];
         currentPlacedTowers = new HashSet<>();
         groundTileDimensions = createGround();
     }
 
+    /**Actually generates the ground tiles.**/
     private static Vector3 createGround(){
         Vector3 groundTileDimensions = new Vector3();
 
@@ -342,6 +349,10 @@ public class GameScreen implements Screen {
         return groundTileDimensions;
     }
 
+    /**Called whenever a tower is placed.
+     * @param coords The coordinates of the to be placed tower.
+     * @param towerIndex The index of the tower.
+     * @see Tower**/
     public static void addNewTower(Vector2 coords, int towerIndex){
         float internalX = coords.x;
         coords.x = gameField.length - 1 - coords.x; //Point of origin of the array is differs with point of origin of Scene Manager
@@ -427,6 +438,9 @@ public class GameScreen implements Screen {
 
     }
 
+    /**Removes the tower on the specified coordinates.
+     * @param coords Coordinates of the to be removed tower.
+     * @see Tower**/
     public static void removeTower(Vector2 coords){
         if (gameField[(int) coords.x][(int) coords.y] == 6)
             startPortalPlaced = false;
@@ -458,6 +472,8 @@ public class GameScreen implements Screen {
         });
     }
 
+    /**Creates the path for the enemies.
+     * @see Dijkstra**/
     public static void createPath(){
         //path = PortalPathFinder.findShortestPath(Arrays.stream(gameField).map(int[]::clone).toArray(int[][]::new));
         Graph g = new Graph(gameField);
@@ -516,6 +532,8 @@ public class GameScreen implements Screen {
         });
     }
 
+    /**Creates the enemies automatically for the current wave.
+     * @see Enemy**/
     @SuppressWarnings("unchecked")
     public static void createEnemies(){
         currentWaveEnemyPile = new LinkedList<>();
@@ -539,6 +557,8 @@ public class GameScreen implements Screen {
         allowEnemySpawn = true;
     }
 
+    /**Moves the enemies automatically during the current wave.
+     * @see Enemy**/
     private static void moveEnemies(){
         frameInterval++;
         if(frameInterval % FRAMEINTERVALL != 0){
@@ -557,9 +577,9 @@ public class GameScreen implements Screen {
 
         Enemy removedEnemy = null;
 
-        //for (Enemy currentEnemy : currentWaveEnemiesSpawned){
-        for (int i = 0; i < currentWaveEnemiesSpawned.size(); i++){
-            Enemy currentEnemy = currentWaveEnemiesSpawned.get(i);
+        for (Enemy currentEnemy : currentWaveEnemiesSpawned){
+        //for (int i = 0; i < currentWaveEnemiesSpawned.size(); i++){
+            //Enemy currentEnemy = currentWaveEnemiesSpawned.get(i);
             sceneManager.removeScene(currentEnemy.getModel());
             float currentX = (float) DoubleRounder.round(currentEnemy.getCoords().x, 4);
             float currentY = (float) DoubleRounder.round(currentEnemy.getCoords().y, 4);
@@ -628,7 +648,10 @@ public class GameScreen implements Screen {
 
     }
 
-    private void towerShoot(){
+    /**Shoots the enemies.
+     * @see Enemy
+     * @see Tower**/
+    private static void towerShoot(){
         if(frameInterval % FRAMEINTERVALL != FRAMEINTERVALL/2){
             return;
         }
@@ -684,6 +707,7 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**Called when the game is lost (no player lives anymore).**/
     private static void lostGame(){
         VisDialog ii = new VisDialog("Verloren LOL");
         VisLabel il = new VisLabel("You lost. To play again restart this application");
@@ -693,6 +717,7 @@ public class GameScreen implements Screen {
         GameUI.showDialog(ii);
     }
 
+    /**Called when sandworm is spawned.**/
     private static void sandworm(Scene klopfer2){
         if(klopfer2.modelInstance.transform.val[12] == klopfer1.modelInstance.transform.val[12]){
             int axis = gameField.length - 1 - (int) klopfer2.modelInstance.transform.val[12];
@@ -751,6 +776,7 @@ public class GameScreen implements Screen {
 
     }
 
+    /**Tidies up the sandworm event.**/
     private static void removeKlopfers(){
         for(int i = 0; i < gameField.length; i++){
             for(int j = 0; j < gameField[0].length; j++){
@@ -765,6 +791,7 @@ public class GameScreen implements Screen {
      * This function acts as a starting point.
      * It generate a simple rectangular map with towers placed on it.
      * It doesn't provide any functionality, but it uses some common ModelInstance specific functions.
+     * @author Dennis Jehle
      */
     private void createMapExample(SceneManager sceneManager) {
 

@@ -8,10 +8,11 @@ import com.kotcrab.vis.ui.widget.*;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
 
+/** Shows the Tower selection UI.**/
 public class TowerPickerWidget extends Actor {
     private final DuneTD parent;
-    private Stage stage;
-    private InputMultiplexer inputMultiplexer;
+    private final Stage stage;
+    private final InputMultiplexer inputMultiplexer;
     private static VisWindow window;
     private VisList<String> list;
     private static VisTextButton btnDestructionMode;
@@ -20,6 +21,8 @@ public class TowerPickerWidget extends Actor {
     protected static boolean buildMode = true;
     public static boolean waveReady = false;
 
+    /** @param inputMultiplexer The widget needs to accept inputs.
+     *  @param stage The stage on where to show the UI.**/
     public TowerPickerWidget(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer){
         this.parent = parent;
         this.stage = stage;
@@ -29,15 +32,17 @@ public class TowerPickerWidget extends Actor {
         configureWidgets();
     }
 
-    private void setWidgets() {
-        window = new VisWindow("Place Towers");
-        list = new VisList<String>();
-        list.setItems("Sonic Tower (3000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (200)", "Klopfer (2500)", "Start-Portal (0)", "End-Portal (0)");
-        list.setSelectedIndex(-1);
-        b = new VisTextButton("Initialize wave");
-        btnDestructionMode = new VisTextButton("Destroy");
+    /** Initial settings for widgets.**/
+     private void setWidgets() {
+            window = new VisWindow("Place Towers");
+            list = new VisList<String>();
+            list.setItems("Sonic Tower (3000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (200)", "Klopfer (2500)", "Start-Portal (0)", "End-Portal (0)");
+            list.setSelectedIndex(-1);
+            b = new VisTextButton("Initialize wave");
+            btnDestructionMode = new VisTextButton("Destroy");
     }
 
+    /** Configuration for appearance for widgets.**/
     private void configureWidgets() {
         window.add(list).row();
         window.add(new Separator()).pad(5).fillX().expandX().row();
@@ -47,6 +52,7 @@ public class TowerPickerWidget extends Actor {
         stage.addActor(window);
     }
 
+    /** Set listeners for buttons and other elements in the widget.**/
     private void setListeners() {
         b.addListener(new ClickListener(){
             @Override
@@ -108,6 +114,7 @@ public class TowerPickerWidget extends Actor {
         inputMultiplexer.addProcessor(stage);
     }
 
+    /** Reactivates the ability to build towers again after one wave has finished**/
     public static void allowBuild(){
         window.getTitleLabel().setText("Place towers:");
         //window.setTouchable(Touchable.enabled);

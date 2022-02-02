@@ -1,8 +1,13 @@
 package io.swapastack.dunetd.util;
 
+import io.swapastack.dunetd.GameScreen;
+
 import java.util.*;
 
 public class Dijkstra {
+    /** Dijkstra shortest path algorithm.
+     * @return A list with all the tiles an enemy has to visit to get from start to end.
+     * @see Enemy**/
     public static LinkedList<Node> getPath(Graph graph, Node source, Node end){
         HashSet<Node> nodes = new HashSet<>();
         HashMap<Node, Integer> dist = new HashMap<>();

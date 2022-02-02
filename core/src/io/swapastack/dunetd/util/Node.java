@@ -3,12 +3,14 @@ package io.swapastack.dunetd.util;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.HashSet;
-import java.util.LinkedList;
-
 public class Node {
     private final Vector2 coords;
-    private HashSet<Node> adjacentNodes = new HashSet<>();
+    private final HashSet<Node> adjacentNodes = new HashSet<>();
 
+    /** Node class needed for the {@link Dijkstra Dijkstra Shortest Path Alhorithm}.
+     * @param coords Coordinates of the node.
+     * @see Graph
+     * @see Dijkstra**/
     public Node(Vector2 coords){
         this.coords = coords;
     }

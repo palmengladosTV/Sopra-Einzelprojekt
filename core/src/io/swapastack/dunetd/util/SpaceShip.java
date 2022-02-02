@@ -7,6 +7,7 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import java.util.LinkedList;
 
+/** SpaceShip Enemy: Slow enemy unit with more max. HP**/
 public class SpaceShip extends Enemy{
     public SpaceShip(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path) {
         super(livePoints, velocity, coords, path);

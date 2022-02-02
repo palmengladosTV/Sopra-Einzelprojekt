@@ -5,6 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+
+/** Old brute force algorithm to find the path for the {@link Enemy Enemies}.
+ * Due to inefficient runtimes for game fields larger than 7*7
+ * now replaced by {@link Dijkstra Dijkstra Shortest Path Alhorithm}.
+ * @see Dijkstra**/
 @Deprecated
 public class PortalPathFinder {
 

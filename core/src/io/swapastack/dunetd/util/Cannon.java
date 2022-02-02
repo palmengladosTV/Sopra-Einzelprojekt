@@ -6,12 +6,11 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import static io.swapastack.dunetd.GameScreen.groundTileDimensions;
 
+/** Cannon (Tower): Not very costly tower that deals damage to one enemy at a time.**/
 public class Cannon extends Tower{
-
     int power;
     public Enemy focused;
     boolean hasFocus;
-
     public Cannon(Vector2 coords, int damage) {
         super(coords);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("weapon_cannon.glb").scene);

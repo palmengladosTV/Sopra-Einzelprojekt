@@ -15,13 +15,19 @@ import com.kotcrab.vis.ui.widget.VisWindow;
 import io.swapastack.dunetd.DuneTD;
 import io.swapastack.dunetd.GameScreen;
 
+
+/** Shows an UI representation of the current Game Field. **/
 public class GameFieldOverview extends Actor {
     private final DuneTD parent;
-    private Stage stage;
-    private InputMultiplexer inputMultiplexer;
+    private final Stage stage;
+    private final InputMultiplexer inputMultiplexer;
     private VisWindow window;
     private final int selectedTower;
 
+    /** Constructor:
+     *  @param inputMultiplexer The widget needs to accept inputs.
+     *  @param stage The stage on where to show the UI.
+     *  @param selectedTower The index of the selected tower.**/
     public GameFieldOverview(DuneTD parent, Stage stage, InputMultiplexer inputMultiplexer, int selectedTower){
         this.parent = parent;
         this.stage = stage;
@@ -29,7 +35,7 @@ public class GameFieldOverview extends Actor {
         this.selectedTower = selectedTower + 1;
         setWidgets();
     }
-
+    /** Window and {@link GameFieldButton GameFieldButtons} are getting set up.**/
     private void setWidgets() {
         byte dimX = (byte) GameScreen.gameField.length;
         byte dimY = (byte) GameScreen.gameField[0].length;

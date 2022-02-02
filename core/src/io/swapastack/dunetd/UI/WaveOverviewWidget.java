@@ -11,18 +11,19 @@ import io.swapastack.dunetd.GameScreen;
 public class WaveOverviewWidget extends Actor {
 
     private final DuneTD parent;
-    private Stage stage;
+    private final Stage stage;
     private VisWindow window;
     private static VisLabel waveNo, currentEnemyCount, spice, totalLives;
     private static int currentWaveMaxEnemies, currentWaveEnemies;
 
+    /** Sets up a UI window with basic information about the current game stats.**/
     public WaveOverviewWidget(DuneTD parent, Stage stage){
         this.parent = parent;
         this.stage = stage;
         setWidgets();
-        configureWidgets();
     }
 
+    /** Initial settings for widgets. **/
     private void setWidgets() {
         waveNo = new VisLabel("0");
         currentEnemyCount = new VisLabel("0/0");
@@ -42,31 +43,44 @@ public class WaveOverviewWidget extends Actor {
         stage.addActor(window);
     }
 
-    private void configureWidgets() {
-
-    }
-
+    /** Changes the money for the whole game.
+     * Not the prettiest implementation but it gets the job done.
+     * @param money If positive, money will increase, if negative, money will decrease.
+     * @see GameScreen**/
     public static void changeMoney(int money){
         GameScreen.money += money;
         spice.setText(GameScreen.money);
     }
 
+    /** Changes the wave number for the whole game.
+     * Not the prettiest implementation but it gets the job done.
+     * @see GameScreen**/
     public static void changeWaveNo(){
         GameScreen.waveNumber++;
         waveNo.setText(GameScreen.waveNumber);
     }
 
+    /** Sets the total amount of enemies this wave.
+     * Not the prettiest implementation but it gets the job done.
+     * @param maxEnemies Amount of total enemies this wave.
+     * @see GameScreen**/
     public static void setWaveEnemies(int maxEnemies){
         currentWaveMaxEnemies = maxEnemies;
         currentWaveEnemies = 0;
         currentEnemyCount.setText("0/" + currentWaveMaxEnemies);
     }
 
+    /** Increases the kill counter for the enemies in the current wave.
+     * Not the prettiest implementation but it gets the job done.
+     * @see GameScreen**/
     public static void addWaveEnemies(){
         currentWaveEnemies++;
         currentEnemyCount.setText(currentWaveEnemies + "/" + currentWaveMaxEnemies);
     }
 
+    /** Subtracts one of the total amount of lives.
+     * Not the prettiest implementation but it gets the job done.
+     * @see GameScreen**/
     public static void changeLives(){
         GameScreen.lives--;
         totalLives.setText(Integer.toString(GameScreen.lives));

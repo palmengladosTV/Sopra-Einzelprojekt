@@ -6,10 +6,10 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import static io.swapastack.dunetd.GameScreen.groundTileDimensions;
 
+/** Sonic Tower: Very costly tower that slows enemies in certain range down.**/
+
 public class SonicTower extends Tower{
-
     int power;
-
     public SonicTower(Vector2 coords, int power) {
         super(coords);
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("towerRound_crystals.glb").scene);

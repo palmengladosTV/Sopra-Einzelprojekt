@@ -7,6 +7,7 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import java.util.LinkedList;
 
+/** Infantry Enemy: Normal enemy with fast speed and small max. HP.**/
 public class Infantry extends Enemy{
     public Infantry(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path) {
         super(livePoints, velocity, coords, path);

@@ -6,6 +6,7 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import static io.swapastack.dunetd.GameScreen.groundTileDimensions;
 
+/** Wall (Tower): Tower that has no effect. Basically acts like a wall.**/
 public class Wall extends Tower{
 
     public Wall(Vector2 coords) {

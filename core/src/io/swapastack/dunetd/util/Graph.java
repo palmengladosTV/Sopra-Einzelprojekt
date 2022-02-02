@@ -8,6 +8,9 @@ public class Graph {
 
     private HashSet<Node> nodes = new HashSet<Node>();
 
+    /** Graph class needed for the {@link Dijkstra Dijkstra Shortest Path Alhorithm}.
+     * @param gameField Adjacency matrix for the graph.
+     * @see Dijkstra**/
     public Graph(int[][] gameField){
         byte dimX = (byte) gameField.length;
         byte dimY = (byte) gameField[0].length;

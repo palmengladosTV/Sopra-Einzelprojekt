@@ -25,7 +25,6 @@ import imgui.glfw.ImGuiImplGlfw;
 
 import java.util.Locale;
 
-
 public class ModelShowcase implements Screen {
 
     SceneAsset sceneAsset;

@@ -13,7 +13,6 @@ public class DuneTD extends Game {
 	public static final float WIDTH = 1400;
 	public static final float HEIGHT= 800;
 
-
 	// The AssetManager is used to load game assets like 3D gltf models or pngs
 	public static AssetManager assetManager = new AssetManager();
 	/**
@@ -77,7 +76,6 @@ public class DuneTD extends Game {
 		// set window title
 		Gdx.graphics.setTitle("Dune-TD - Sopra 2021 / 2022");
 		//VisUI.load();
-
 
 		// configure asset manager to work with gdx gltf
 		assetManager.setLoader(SceneAsset.class, ".gltf", new GLTFAssetLoader());

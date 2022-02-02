@@ -24,6 +24,7 @@ import com.kotcrab.vis.ui.VisUI;
  * Multiple buttons for interaction with the app.
  *
  * @author Dennis Jehle
+ * @author Tim Palm 
  */
 public class MainMenuScreen implements Screen {
 
@@ -150,7 +151,7 @@ public class MainMenuScreen implements Screen {
                        try {
                            byte dimX = Byte.parseByte(f.getText());
                            byte dimY = Byte.parseByte(g.getText());
-                           if(dimX < 10 && dimY < 10 && dimX > 2 && dimY > 2)
+                           if(dimX <= 12 && dimY <= 12 && dimX > 2 && dimY > 2)
                                parent.changeScreen(ScreenEnum.GAME, dimX, dimY);
                            else
                                invalidInput();
@@ -162,7 +163,7 @@ public class MainMenuScreen implements Screen {
 
                    private void invalidInput(){
                         Dialog ii = new Dialog("Invalid Input", skin);
-                        Label il = new Label("Your input must be a valid\nnumber and between 2 and 10!", skin);
+                        Label il = new Label("Your input must be a valid\nnumber and between 3 and 12!", skin);
                         il.setAlignment(Align.center);
                         ii.text(il);
                         ii.button("OK");

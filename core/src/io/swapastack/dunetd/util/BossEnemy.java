@@ -7,6 +7,7 @@ import net.mgsx.gltf.scene3d.scene.Scene;
 
 import java.util.LinkedList;
 
+/** Boss Enemy: Very big and slow enemy unit. Much max. HP**/
 public class BossEnemy extends Enemy{
     public BossEnemy(int livePoints, int velocity, Vector2 coords, LinkedList<Vector2> path) {
         super(livePoints, velocity, coords, path);

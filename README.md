@@ -1,12 +1,20 @@
-# Dune-TD (Template)
+# Dune-TD (Einzelprojekt)
 
-This is the Dune-TD template provided by Dennis Jehle for your implementation of Dune-TD. Feel free to modify the template. If you want to use another framework or programming language, please contact your tutor.
+This is the finished result of the Sopra 2021/2022 Dune themed Einzelprojekt. This project use a
+template provided by Dennis Jehle for the implementation of Dune-TD. Feel free to modify the template.
 
 ![](template_screenshot_menu.png)
 
 ![](template_screenshot_game.png)
 
 ![](template_screenshot_showcase.png)
+
+## Modifications to the given task
+* There is no music!
+* You can't win the game anymore. It is endless now.
+* Auto adjusting wave difficulties.
+* Custom UI skin
+* ...
 
 ## Requirements
 
@@ -58,3 +66,5 @@ In the `tools` folder there is a GLTF model viewer provided by [https://github.c
 ## Licenses
 
 Have a look at the `core/assets/licenses` folder to see the licenses for the used game assets. If you add something new to the template, make sure to provide the licenses for your game assets.
+
+© Tim Palm 2022
