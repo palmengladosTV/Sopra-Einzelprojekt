@@ -42,9 +42,9 @@ public class GameScreen implements Screen {
 
     private final DuneTD parent;
 
-    public static int waveNumber = 0;
-    public static int money = 500;
-    public static int lives = 50;
+    public static int waveNumber = 0; //default: 0
+    public static int money = 500; //default: 500
+    public static int lives = 50; //default: 50
 
     private static final byte FRAMEINTERVALL = 20;
 
@@ -116,8 +116,6 @@ public class GameScreen implements Screen {
         rows = fieldX;
         cols = fieldY;
         frameInterval = 0;
-
-        waveNumber = 0;
         initGameUI();
     }
 
@@ -239,12 +237,18 @@ public class GameScreen implements Screen {
         // OpenGL - clear color and depth buffer
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
+        try {
+            for (Enemy e : currentWaveEnemiesSpawned)
+                e.getAnimationController().update(delta);
+        } catch (NullPointerException ignored) { }
+
+        /*
         try { bossCharacterAnimationController.update(delta); }
         catch (NullPointerException ignored) { }
         try { enemyCharacterAnimationController.update(delta); }
         catch (NullPointerException ignored) { }
         try{ spaceshipAnimationController.update(delta); }
-        catch (NullPointerException ignored) { }
+        catch (NullPointerException ignored) { }*/
 
         // SpaiR/imgui-java
         imGuiGlfw.newFrame();
@@ -519,7 +523,7 @@ public class GameScreen implements Screen {
             Enemy current;
             if(i % 5 == 0 && i > 15)
                 current = new SpaceShip(250,3,path.get(0), (LinkedList<Vector2>) path.clone());
-            else if (i % 8  == 0 && i >= 24)
+            else if (i % 8  == 0 && i > 30)
                 current = new BossEnemy(500,2,path.get(0), (LinkedList<Vector2>) path.clone());
             else
                 current = new Infantry(100, 5, path.get(0), (LinkedList<Vector2>) path.clone());

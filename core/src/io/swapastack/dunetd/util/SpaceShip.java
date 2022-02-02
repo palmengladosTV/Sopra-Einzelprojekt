@@ -1,5 +1,6 @@
 package io.swapastack.dunetd.util;
 
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector2;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
@@ -12,6 +13,8 @@ public class SpaceShip extends Enemy{
         super.model = new Scene(GameScreen.sceneAssetHashMap.get("spaceship_orion/scene.gltf").scene);
         model.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
         super.money = 300;
+        super.ac = new AnimationController(model.modelInstance);
+        super.ac.setAnimation("Action", -1);
     }
 
 }

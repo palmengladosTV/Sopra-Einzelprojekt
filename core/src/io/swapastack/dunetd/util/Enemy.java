@@ -1,5 +1,6 @@
 package io.swapastack.dunetd.util;
 
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector2;
 import io.swapastack.dunetd.GameScreen;
 import net.mgsx.gltf.scene3d.scene.Scene;
@@ -15,6 +16,7 @@ public abstract class Enemy{
     Scene model;
     int rotation;
     int money;
+    AnimationController ac;
 
     public Enemy(int livePoints, float velocity, Vector2 coords, LinkedList<Vector2> path){
         this.livePoints = livePoints;
@@ -82,6 +84,10 @@ public abstract class Enemy{
 
     public int getMoney(){
         return this.money;
+    }
+
+    public AnimationController getAnimationController(){
+        return this.ac;
     }
 
 }
