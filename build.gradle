@@ -91,6 +91,8 @@ project(":core") {
 
         compile 'org.decimal4j:decimal4j:1.0.3'
 
+        compile 'org.junit.jupiter:junit-jupiter:5.6.2'
+
         // google/gson
         implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -115,5 +117,7 @@ project(":core") {
         implementation 'io.github.spair:imgui-java-natives-macos:1.84.1.4'
 
         //compile "com.kotcrab.vis:vis-ui:1.5.0"
+
+
     }
 }
