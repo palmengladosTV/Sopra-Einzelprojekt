@@ -32,7 +32,7 @@ public class TowerPickerWidget extends Actor {
     private void setWidgets() {
         window = new VisWindow("Place Towers");
         list = new VisList<String>();
-        list.setItems("Sonic Tower (5000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (200)", "Klopfer (0)", "Start-Portal (0)", "End-Portal (0)");
+        list.setItems("Sonic Tower (3000)", "Canon Tower (250)", "Bomb Tower (1000)", "Wall (200)", "Klopfer (2500)", "Start-Portal (0)", "End-Portal (0)");
         list.setSelectedIndex(-1);
         b = new VisTextButton("Initialize wave");
         btnDestructionMode = new VisTextButton("Destroy");
@@ -54,7 +54,7 @@ public class TowerPickerWidget extends Actor {
                 if(waveReady){
                     //waveReady = false;
                     //b.setText("Initialize wave");
-                    window.getTitleLabel().setText("Window disabled!");
+                    window.getTitleLabel().setText("Only Klopfers available.");
                     //window.setTouchable(Touchable.disabled);
                     btnDestructionMode.setDisabled(true);
                     GameScreen.createEnemies();
@@ -80,6 +80,8 @@ public class TowerPickerWidget extends Actor {
         btnDestructionMode.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
+                if(btnDestructionMode.isDisabled())
+                    return;
                 TowerPickerWidget.buildMode = false;
                 if(!gfoWindowActive){
                     gfoWindowActive = true;
@@ -92,7 +94,6 @@ public class TowerPickerWidget extends Actor {
             @Override
             public void clicked(InputEvent inputEvent, float x, float y){
                 if(!gfoWindowActive){
-                    System.out.println(GameScreen.allowEnemySpawn);
                     if(GameScreen.allowEnemySpawn == (list.getSelectedIndex() != 4)){  //5 - 1 = 4
                         list.setSelectedIndex(-1);
                         return;
@@ -110,7 +111,7 @@ public class TowerPickerWidget extends Actor {
     public static void allowBuild(){
         window.getTitleLabel().setText("Place towers:");
         //window.setTouchable(Touchable.enabled);
-        btnDestructionMode.setDisabled(true);
+        btnDestructionMode.setDisabled(false);
     }
 
     @Override

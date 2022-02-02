@@ -2,7 +2,6 @@ package io.swapastack.dunetd;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
-import com.badlogic.gdx.backends.lwjgl3.audio.Wav;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Null;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -346,32 +344,40 @@ public class GameScreen implements Screen {
         switch(towerIndex){
             case 1:
                 SonicTower sonicTower = new SonicTower(coords, 4);
-                if(sonicTower.getMoney()>money)
+                if(sonicTower.getMoney()>money){
+                    GameUI.showNotEnoughMoneyDialog();
                     return;
+                }
                 WaveOverviewWidget.changeMoney(-sonicTower.getMoney());
                 currentPlacedTowers.add(sonicTower);
                 sceneManager.addScene(sonicTower.getModel());
                 break;
             case 2:
                 Cannon cannon = new Cannon(coords, 5);
-                if(cannon.getMoney()>money)
+                if(cannon.getMoney()>money){
+                    GameUI.showNotEnoughMoneyDialog();
                     return;
+                }
                 WaveOverviewWidget.changeMoney(-cannon.getMoney());
                 currentPlacedTowers.add(cannon);
                 sceneManager.addScene(cannon.getModel());
                 break;
             case 3:
                 BombTower bombTower = new BombTower(coords, 10);
-                if(bombTower.getMoney()>money)
+                if(bombTower.getMoney()>money){
+                    GameUI.showNotEnoughMoneyDialog();
                     return;
+                }
                 WaveOverviewWidget.changeMoney(-bombTower.getMoney());
                 currentPlacedTowers.add(bombTower);
                 sceneManager.addScene(bombTower.getModel());
                 break;
             case 4:
                 Wall wall = new Wall(coords);
-                if(wall.getMoney()>money)
+                if(wall.getMoney()>money){
+                    GameUI.showNotEnoughMoneyDialog();
                     return;
+                }
                 WaveOverviewWidget.changeMoney(-wall.getMoney());
                 currentPlacedTowers.add(wall);
                 sceneManager.addScene(wall.getModel());
@@ -381,6 +387,10 @@ public class GameScreen implements Screen {
                 klopfer.modelInstance.transform.setToTranslation(coords.x, groundTileDimensions.y, coords.y);
                 klopfer.modelInstance.transform.scale(0.2f, 0.2f, 0.2f);
                 klopfer.modelInstance.transform.rotate(new Vector3(0f,1f,0f),30f);
+                if(money < 2500){
+                    GameUI.showNotEnoughMoneyDialog();
+                    return;
+                }
                 if(klopfer1Placed){
                     sandworm(klopfer);
                     return;
@@ -701,6 +711,8 @@ public class GameScreen implements Screen {
             }
             removedEnemies.forEach(e -> currentWaveEnemiesSpawned.remove(e));
             removedTowers.forEach(t -> removeTower(t.getCoords()));
+            WaveOverviewWidget.changeMoney(-2500);
+            removeKlopfers();
         }else if(klopfer2.modelInstance.transform.val[14] == klopfer1.modelInstance.transform.val[14]){
             int axis = (int) klopfer2.modelInstance.transform.val[14];
             klopfer1Placed = false;
@@ -722,8 +734,17 @@ public class GameScreen implements Screen {
             }
             removedEnemies.forEach(e -> currentWaveEnemiesSpawned.remove(e));
             removedTowers.forEach(t -> removeTower(t.getCoords()));
+            WaveOverviewWidget.changeMoney(-2500);
+            removeKlopfers();
+        }else{
+            VisDialog ii = new VisDialog("Invalid Klopfer Placement");
+            VisLabel il = new VisLabel("Your two klopfers need to be in the same column or row!");
+            il.setAlignment(Align.center);
+            ii.text(il);
+            ii.button("OK");
+            GameUI.showDialog(ii);
         }
-        removeKlopfers();
+
     }
 
     private static void removeKlopfers(){

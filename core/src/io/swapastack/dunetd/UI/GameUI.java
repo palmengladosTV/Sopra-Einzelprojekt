@@ -2,9 +2,11 @@ package io.swapastack.dunetd.UI;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisLabel;
 import io.swapastack.dunetd.DuneTD;
 
 public class GameUI {
@@ -38,6 +40,15 @@ public class GameUI {
 
     public static void showDialog(VisDialog d){
         d.show(stage);
+    }
+
+    public static void showNotEnoughMoneyDialog(){
+        VisDialog ii = new VisDialog("Not enough money");
+        VisLabel il = new VisLabel("You don't have enough spice to do that!");
+        il.setAlignment(Align.center);
+        ii.text(il);
+        ii.button("OK");
+        showDialog(ii);
     }
 
     public void update(float delta){
